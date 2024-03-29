@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader } from '@/components/shadcn/card'
 import { FlightPriceService, IFlightPriceService } from '@/services/flight-price-service';
 import { useData } from '@/context/DataContext';
 import ErrorMessage from '../error-message/error-message';
+import {FlightApiService, IFlightApiService} from "@/services/flight-api-service";
 
 
 export interface Row {
@@ -19,7 +20,8 @@ export interface Row {
 }
 
 export default function FlightInput() {
-  const flightPriceService: IFlightPriceService = new FlightPriceService();
+  const flightApiService: IFlightApiService = new FlightApiService();
+  const flightPriceService: IFlightPriceService = new FlightPriceService(flightApiService);
   const { loading, setFetchedData, setInProgress } = useData();
 
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
