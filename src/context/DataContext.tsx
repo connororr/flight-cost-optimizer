@@ -5,7 +5,7 @@ interface DataContextProps {
   children: ReactNode;
 }
 
-interface DataContextValue {
+export interface DataContextValue {
   itineraries: Itineraries | null;
   loading: boolean;
   setFetchedData: (newData: Itineraries) => void;
@@ -36,10 +36,10 @@ export const DataProvider: React.FC<DataContextProps> = ({ children }) => {
   return <DataContext.Provider value={contextValue}>{children}</DataContext.Provider>;
 };
 
-export const useData = (): DataContextValue => {
+export function useData(): DataContextValue {
   const context = useContext(DataContext);
   if (!context) {
     throw new Error('useData must be used within a DataProvider');
   }
   return context;
-};
+}

@@ -9,11 +9,11 @@ export default function Itineraries() {
 
     if (!data.itineraries && data.loading) {
         return (
-          <div>
+          <>
             {[...Array(timesToRepeat)].map(() => (
               <FlightDetailsLoading />
             ))}
-          </div>
+          </>
         );
     }
 

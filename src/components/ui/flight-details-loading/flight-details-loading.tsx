@@ -9,7 +9,7 @@ export default function FlightDetailsLoading() {
     const timesToRepeat: number = 3;
   
     return (
-      <Card className="w-full max-w-3xl bg-white p-4 shadow-lg flex m-[10px]">
+      <Card className="w-full max-w-3xl bg-white p-4 shadow-lg flex m-[10px]" data-testid="flight-details-loading">
         <CardContent className="flex-1">
           {[...Array(timesToRepeat)].map((_, index) => (
             <div key={index} className={`flex items-center justify-between ${index > 0 ? 'border-t border-gray-200' : ''} pt-4 pb-4`}>

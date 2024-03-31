@@ -9,29 +9,30 @@ import { Card, CardContent, CardHeader } from '@/components/shadcn/card'
 import { FlightPriceService, IFlightPriceService } from '@/services/flight-price-service';
 import { useData } from '@/context/DataContext';
 import ErrorMessage from '../error-message/error-message';
-import {FlightApiService, IFlightApiService} from "@/services/flight-api-service";
+import { FlightApiService, IFlightApiService } from "@/services/flight-api-service";
 
 
-export interface Row {
+export interface IRow {
   id: number;
   from: string;
   to: string;
   date: string;
 }
 
-export default function FlightInput() {
+export function useFlightInputs() {
   const flightApiService: IFlightApiService = new FlightApiService();
   const flightPriceService: IFlightPriceService = new FlightPriceService(flightApiService);
-  const { loading, setFetchedData, setInProgress } = useData();
+  const blah = useData();
+  const { loading, setFetchedData, setInProgress } = blah;
 
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
-  const [rows, setRows] = useState<Row[]>([
+  const [rows, setRows] = useState<IRow[]>([
     { id: 1, from: '', to: '', date: '' },
-    { id: 2, from: '', to: '', date: '' }, 
+    { id: 2, from: '', to: '', date: '' },
   ]);
 
   async function getFlightPrices(): Promise<void> {
-    rows.forEach((row: Row) => {
+    rows.forEach((row: IRow) => {
       if (row.from === '') {
         setErrorMessages([...errorMessages,'Please enter a valid departure location.']);
       }
@@ -55,26 +56,53 @@ export default function FlightInput() {
     }
   }
 
-  const handleInputChange = (
-    index: number,
-    field: keyof Row,
-    value: string
-  ): void => {
+  function areDatesInChronologicalOrder(rows: IRow[]): boolean {
+    for (let i = 1; i < rows.length; i++) {
+      const currentDate = new Date(rows[i].date);
+      const previousDate = new Date(rows[i - 1].date);
+
+      if (currentDate < previousDate) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  function handleInputChange(
+      index: number,
+      field: keyof IRow,
+      value: string
+  ): void {
     const updatedRows = [...rows];
     updatedRows[index][field] = value;
     setRows(updatedRows);
   };
 
-  const addRow = (): void => {
+  function addRow() {
     setRows((prevRows) => [
       ...prevRows,
       { id: prevRows.length + 1, from: '', to: '', date: '' },
     ]);
   };
 
-  const removeRow = (index: number): void => {
+  function removeRow(index: number): void {
     setRows((prevRows) => prevRows.filter((_, i) => i !== index));
   };
+
+  return { removeRow, addRow, handleInputChange, getFlightPrices, rows, setRows, errorMessages, setErrorMessages, loading };
+}
+
+export default function FlightInput() {
+  const {
+    removeRow,
+    addRow,
+    handleInputChange,
+    getFlightPrices,
+    rows,
+    errorMessages,
+    loading
+  } = useFlightInputs();
 
   return (
     <main key="1" className="container mx-auto px-4 py-8 w-7/1">
@@ -110,6 +138,7 @@ export default function FlightInput() {
                 onClick={() => removeRow(index)}
                 variant="ghost"
                 disabled={rows.length === 2}
+                aria-label="remove row"
               >
                 <XIcon className="w-4 h-4" />
               </Button>
@@ -123,7 +152,6 @@ export default function FlightInput() {
           className="w-1/4 bg-blue-500 hover:bg-blue-600 text-white min-w-[currentSize] flex items-center" 
           variant="solid"
           onClick={addRow}
-          disabled={rows.length === 6}
         >
           <PlusIcon className="w-4 h-4 mr-2" />
           Add another row
@@ -182,16 +210,3 @@ function XIcon(props: any) {
     </svg>
   )
 }
-
-function areDatesInChronologicalOrder(rows: Row[]): boolean {
-  for (let i = 1; i < rows.length; i++) {
-    const currentDate = new Date(rows[i].date);
-    const previousDate = new Date(rows[i - 1].date);
-
-    if (currentDate < previousDate) {
-      return false;
-    }
-  }
-
-  return true;
-};
