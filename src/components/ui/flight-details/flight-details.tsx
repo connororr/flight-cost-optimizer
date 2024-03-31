@@ -24,7 +24,7 @@ interface FlightDetailsProps {
 
 const FlightDetails: React.FC<FlightDetailsProps> = ({ itinerary }) => {
   return (
-    <Card className="w-full max-w-3xl bg-white p-4 shadow-lg flex m-[10px]">
+    <Card className="w-full max-w-3xl bg-white p-4 shadow-lg flex m-[10px]" data-testid="flight-details">
       <CardContent className="flex-1">
         {itinerary.flightLegs.map((leg, index) => {
 

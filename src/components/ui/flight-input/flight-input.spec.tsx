@@ -55,7 +55,7 @@ describe('FlightInput', () => {
 
             removeRowButtons.forEach((removeRowButton) => {
                 expect(removeRowButton).toBeDisabled();
-            })
+            });
         })
     })
 
