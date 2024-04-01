@@ -46,7 +46,7 @@ const FlightDetails: React.FC<FlightDetailsProps> = ({ itinerary }) => {
           }
        
           return (
-            <div key={index} className={`flex items-center justify-between ${index > 0 ? 'border-t border-gray-200' : ''} pt-4`}>
+            <div key={index} className={`flex items-center justify-between ${index > 0 ? 'border-t border-gray-200' : ''} pt-4`} data-testid="flight-leg">
               <div className="flex items-center space-x-4">
                 <PlaneIcon className="h-6 w-6" />
                 <div>
