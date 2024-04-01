@@ -28,7 +28,6 @@ export class AmadeusService implements IAmadeusService {
             headers: this.generateDefaultHeaders(method),
             body: JSON.stringify(body)
         }
-        console.log('requestOptions', requestOptions);
         return fetch(`${this.amadeusBaseUrl}${endpoint}`, requestOptions)
     }
 
