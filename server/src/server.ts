@@ -27,7 +27,6 @@ server.addHook('preHandler', (req, res, done) => {
   if (isPreflight) {
     return res.send();
   }
-      
   done();
 })
 

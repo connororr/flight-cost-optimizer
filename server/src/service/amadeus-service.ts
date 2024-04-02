@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { AccessTokenResponse } from '../constants/external-api/response';
 import 'dotenv/config'
 
@@ -11,15 +10,15 @@ export interface IAmadeusService {
 type HTTPMethod = 'POST' | 'GET'
 
 export class AmadeusService implements IAmadeusService {
+    private _accessToken: string = '';
+    private _amadeusBaseUrl: string = 'https://test.api.amadeus.com';
 
-    private accessTokenTimestamp: number = 0;
-    private accessToken: string = '';
-    private amadeusBaseUrl: string = 'https://test.api.amadeus.com';
 
+    constructor(private _accessTokenTimestamp: number = 0) {}
     public async request(endpoint: string, body: unknown, method: HTTPMethod = 'GET'): Promise<unknown> {
-        const elapsedTime = (Date.now() - this.accessTokenTimestamp) / (1000 * 60);
+        const elapsedTime = (Date.now() - this._accessTokenTimestamp) / (1000 * 60);
         if (elapsedTime > 20) {
-            this.accessToken = await this.getAccessToken();
+            this._accessToken = await this.getAccessToken();
         }
         
         // TODO: figure out the right type
@@ -28,13 +27,13 @@ export class AmadeusService implements IAmadeusService {
             headers: this.generateDefaultHeaders(method),
             body: JSON.stringify(body)
         }
-        return fetch(`${this.amadeusBaseUrl}${endpoint}`, requestOptions)
+        return fetch(`${this._amadeusBaseUrl}${endpoint}`, requestOptions)
     }
 
     private generateDefaultHeaders(method: HTTPMethod): HeadersInit {
         let headers: HeadersInit = {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.accessToken}`
+            'Authorization': `Bearer ${this._accessToken}`
         };
 
         if (method === 'POST') {
@@ -53,16 +52,16 @@ export class AmadeusService implements IAmadeusService {
         };
 
         // TODO: figure out the right type
-        const requestOptions = {
+        const requestOptions: RequestInit = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: new URLSearchParams(tokenRequest).toString(),
         };
-        const tokenResponse = await fetch(`${this.amadeusBaseUrl}/v1/security/oauth2/token`, requestOptions);
+        const tokenResponse = await fetch(`${this._amadeusBaseUrl}/v1/security/oauth2/token`, requestOptions);
         const responseBody: AccessTokenResponse = await tokenResponse.json() as AccessTokenResponse;
-        this.accessTokenTimestamp = Date.now();
+        this._accessTokenTimestamp = Date.now();
         return responseBody.access_token;
     }
 }
