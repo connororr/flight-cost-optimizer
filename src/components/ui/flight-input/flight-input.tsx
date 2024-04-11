@@ -22,8 +22,7 @@ export interface IRow {
 export function useFlightInputs() {
   const flightApiService: IFlightApiService = new FlightApiService();
   const flightPriceService: IFlightPriceService = new FlightPriceService(flightApiService);
-  const blah = useData();
-  const { loading, setFetchedData, setInProgress } = blah;
+  const { loading, setFetchedData, setInProgress } = useData();
 
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [rows, setRows] = useState<IRow[]>([
@@ -32,30 +31,52 @@ export function useFlightInputs() {
   ]);
 
   async function getFlightPrices(): Promise<void> {
+    const newErrorMessages: string[] = [];
     rows.forEach((row: IRow) => {
       if (row.from === '') {
-        setErrorMessages([...errorMessages,'Please enter a valid departure location.']);
+        newErrorMessages.push('Please enter a valid departure location.');
       }
       if (row.to === '') {
-        setErrorMessages([...errorMessages, 'Please enter a valid arrival location.']);
+        newErrorMessages.push('Please enter a valid arrival location.');
       }
       if (row.date === '') {
-        const errors = [...errorMessages, 'Please enter a valid departure date.'];
-        setErrorMessages(errors);
+        newErrorMessages.push('Please enter a valid departure date.');
       }
     });
-    if (areDatesInChronologicalOrder(rows)) {
-      setErrorMessages([...errorMessages, 'Please ensure your dates are in chronological order.']);
+
+    if (!areDatesInChronologicalOrder(rows)) {
+      newErrorMessages.push('Please ensure your dates are in chronological order.');
     }
-    if (errorMessages.length === 0) {
+
+    if (isPastDate(rows)) {
+      newErrorMessages.push('Please ensure your dates are not in the past.');
+
+    }
+
+    if (newErrorMessages.length === 0) {
       setInProgress(true);
       setFetchedData(null);
       const flightPrices = await flightPriceService.getFlightPrices(rows);
       setFetchedData(flightPrices);
       setInProgress(false);
+    } else {
+      setErrorMessages(newErrorMessages);
     }
   }
 
+  function isPastDate(rows: IRow[]): boolean {
+    const currentDate = new Date();
+    let isPast = false;
+
+    for (let i = 0; i < rows.length; i++) {
+      const rowDate = new Date(rows[i].date)
+      if (rowDate < currentDate) {
+        isPast = true;
+      }
+    }
+
+    return isPast;
+  }
   function areDatesInChronologicalOrder(rows: IRow[]): boolean {
     for (let i = 1; i < rows.length; i++) {
       const currentDate = new Date(rows[i].date);
@@ -67,7 +88,7 @@ export function useFlightInputs() {
     }
 
     return true;
-  };
+  }
 
   function handleInputChange(
       index: number,
@@ -133,6 +154,8 @@ export default function FlightInput() {
                 type="date"
                 value={row.date}
                 onChange={(e) => handleInputChange(index, 'date', e.target.value)}
+                min={new Date().toISOString().slice(0,10)}
+                data-testid="date-input"
               />
               <Button type="button" 
                 onClick={() => removeRow(index)}

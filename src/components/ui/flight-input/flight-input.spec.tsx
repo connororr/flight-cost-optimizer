@@ -28,10 +28,49 @@ describe('FlightInput', () => {
 
         result.current.setRows(mockRows);
         rerender();
-        result.current.getFlightPrices();
-        await new Promise(process.nextTick);
+        await result.current.getFlightPrices();
 
         expect(mockFlightPriceService.getFlightPrices).toHaveBeenCalledWith(mockRows);
+    });
+
+    it.each([['from', 'Please enter a valid departure location.'],
+        ['to', 'Please enter a valid arrival location.'],
+        ['date', 'Please enter a valid departure date.']])('should show an error when a \'%s\' input field is not filled in',
+        async (_, expectedMessage) => {
+            const mockErrorRows = createMockRows(true);
+            const { result, rerender } = renderHook(() => useFlightInputs());
+
+            result.current.setRows(mockErrorRows);
+            rerender();
+            await result.current.getFlightPrices();
+            rerender();
+            const errorMessageExists = result.current.errorMessages.includes(expectedMessage);
+            expect(errorMessageExists).toBe(true);
+    });
+
+
+    it('should show an error when calendar dates are not in chronological order', async() => {
+        const mockErrorRows = createMockRowsInWrongChronologicalOrder();
+        const { result, rerender } = renderHook(() => useFlightInputs());
+
+        result.current.setRows(mockErrorRows);
+        rerender();
+        await result.current.getFlightPrices();
+        rerender();
+        const errorMessageExists = result.current.errorMessages.includes('Please ensure your dates are in chronological order.');
+        expect(errorMessageExists).toBe(true);
+    });
+
+    it('should throw an error if dates earlier than today are used', async () => {
+        const mockErrorRows = createMockRowsInWrongChronologicalOrder('2020-03-03');
+        const { result, rerender } = renderHook(() => useFlightInputs());
+
+        result.current.setRows(mockErrorRows);
+        rerender();
+        await result.current.getFlightPrices();
+        rerender();
+        const errorMessageExists = result.current.errorMessages.includes('Please ensure your dates are not in the past.');
+        expect(errorMessageExists).toBe(true);
     });
 
     describe('when six rows are being displayed', () => {
@@ -59,12 +98,12 @@ describe('FlightInput', () => {
         })
     })
 
-    function createMockRows(): Array<IRow> {
+    function createMockRows(isError: boolean = false): Array<IRow> {
         const mockRow1: IRow = {
             id: 123,
-            from: 'mock-from',
-            to: 'mock-to',
-            date: 'mock-date'
+            from: isError? '' : 'mock-from',
+            to: isError ? '' : 'mock-to',
+            date: isError ? '' : 'mock-date'
         };
         const mockRow2: IRow = {
             id: 456,
@@ -73,5 +112,20 @@ describe('FlightInput', () => {
             date: 'mock-date-2'
         }
         return [mockRow1, mockRow2];
+    };
+
+    function createMockRowsInWrongChronologicalOrder(dateOverride?: string) {
+        const mockRow1 = createMockRow('mockFrom', 'mockTo', dateOverride ?? '2028-04-08');
+        const mockRow2 = createMockRow('mockFrom', 'mockTo', '2028-04-06');
+        return [mockRow1, mockRow2]
+    }
+
+    function createMockRow(mockFrom?: string, mockTo?: string, mockDate?: string): IRow {
+       return {
+            id: 123,
+            from:  mockFrom ?? 'mock-from',
+            to: mockTo ?? 'mock-to',
+            date: mockDate ?? 'mock-date'
+        };
     }
 })
