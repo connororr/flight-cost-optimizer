@@ -14,7 +14,7 @@ describe('FlightApiService', () => {
 
     })
 
-    describe('request()', () => {
+    describe('post()', () => {
         it('should make a request to the given endpoint', () => {
             const mockRequestOptions: RequestInit = {
                 method: mockMethod,
@@ -25,25 +25,45 @@ describe('FlightApiService', () => {
             }
             const testInstance = createTestInstance();
 
-            testInstance.request(mockEndpoint, mockBody, mockMethod);
+            testInstance.post(mockEndpoint, mockBody);
 
             expect(fetch).toHaveBeenCalledWith(`http://localhost:3001${mockEndpoint}`, mockRequestOptions);
         });
 
-        it('should default to GET if no endpoint is given', () => {
+    });
+
+    describe('get()', () => {
+        it('should make a request to the given endpoint', () => {
             const mockRequestOptions: RequestInit = {
-                method: 'GET',
+                method: mockMethod,
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(mockBody)
             }
             const testInstance = createTestInstance();
 
-            testInstance.request(mockEndpoint, mockBody);
+            testInstance.get(mockEndpoint);
 
             expect(fetch).toHaveBeenCalledWith(`http://localhost:3001${mockEndpoint}`, mockRequestOptions);
-        })
+        });
+
+        it('should add params to the url if given', () => {
+            const mockSearchParams = new URLSearchParams({
+                mockVal: 'mockVal'
+            })
+            const mockRequestOptions: RequestInit = {
+                method: mockMethod,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+            const testInstance = createTestInstance();
+
+            testInstance.get(mockEndpoint, mockSearchParams);
+
+            expect(fetch).toHaveBeenCalledWith(`http://localhost:3001${mockEndpoint}?${mockSearchParams}`, mockRequestOptions);
+        });
+
     })
 
     function createTestInstance(): IFlightApiService {

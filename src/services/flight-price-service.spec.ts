@@ -19,7 +19,7 @@ describe('FlightPriceService', () => {
         }
         mockFlights = [mockFlight];
         mockFlightApiService = {
-            request: jest.fn().mockResolvedValue({
+            post: jest.fn().mockResolvedValue({
                 json: jest.fn().mockResolvedValue(mockItineraries)
             })
         };
@@ -30,7 +30,7 @@ describe('FlightPriceService', () => {
             const testInstance = createTestInstance();
             const mockBody = JSON.stringify(mockFlights);
             await testInstance.getFlightPrices(mockFlights);
-            expect(mockFlightApiService.request).toHaveBeenCalledWith(Endpoints.Flights, mockBody, 'POST')
+            expect(mockFlightApiService.post).toHaveBeenCalledWith(Endpoints.Flights, mockBody)
         });
     })
 
