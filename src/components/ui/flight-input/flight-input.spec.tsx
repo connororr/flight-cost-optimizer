@@ -21,7 +21,7 @@ describe('FlightInput', () => {
             getFlightPrices: jest.fn()
         };
         (FlightPriceService as jest.Mock).mockReturnValue(mockFlightPriceService);
-    })
+    });
 
     it('should search for flights given a set of travel details', async () => {
         const { result, rerender } = renderHook(() => useFlightInputs());
