@@ -8,7 +8,7 @@ export class FlightApiService implements IFlightApiService {
     // TODO: update this with the prod url when you get the prod url
     private flightApiServiceBaseUrl: string = 'http://localhost:3001';
 
-    public post(endpoint: string, body?: unknown, params?: URLSearchParams): Promise<unknown> {
+    public post(endpoint: string, body?: unknown): Promise<unknown> {
         const requestOptions: RequestInit = {
             method: 'POST',
             headers: {
@@ -16,15 +16,12 @@ export class FlightApiService implements IFlightApiService {
             },
             body: JSON.stringify(body)
         }
-
-        const baseUrl = `${this.flightApiServiceBaseUrl}${endpoint}`;
-        const url = params ? `${baseUrl}?${params}` : `${baseUrl}`;
-        return fetch(url, requestOptions)
+        return fetch(`${this.flightApiServiceBaseUrl}${endpoint}`, requestOptions)
     }
 
     public get(endpoint: string, params?: URLSearchParams): Promise<unknown> {
         const requestOptions: RequestInit = {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },

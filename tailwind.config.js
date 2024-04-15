@@ -16,6 +16,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        norwege: "#017396",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
