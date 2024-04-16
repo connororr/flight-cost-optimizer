@@ -14,9 +14,13 @@ export function useCityNameInputs() {
     const iataCodeService: IIataCodeService = new IataCodeService(flightApiService);
 
     async function getIataCodes() {
-        setLoading(true);
-        const cities = await iataCodeService.getIataCodes(city);
-        setIataCode(cities[0].iataCode);
+        try {
+            setLoading(true);
+            const cities = await iataCodeService.getIataCodes(city);
+            setIataCode(cities[0].iataCode);
+        } catch (e) {
+            // do nothing
+        }
         setLoading(false);
     }
 
