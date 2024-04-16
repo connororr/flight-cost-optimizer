@@ -8,16 +8,17 @@ describe('FlightApiService', () => {
     const mockBody = { 
         mockVal: 'mock-val'
     };
-    const mockMethod = 'POST'
+    const mockPostMethod = 'POST';
+    const mockGetMethod = 'GET';
 
     beforeEach(() => {
 
     })
 
-    describe('request()', () => {
+    describe('post()', () => {
         it('should make a request to the given endpoint', () => {
             const mockRequestOptions: RequestInit = {
-                method: mockMethod,
+                method: mockPostMethod,
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -25,25 +26,45 @@ describe('FlightApiService', () => {
             }
             const testInstance = createTestInstance();
 
-            testInstance.request(mockEndpoint, mockBody, mockMethod);
+            testInstance.post(mockEndpoint, mockBody);
 
             expect(fetch).toHaveBeenCalledWith(`http://localhost:3001${mockEndpoint}`, mockRequestOptions);
         });
 
-        it('should default to GET if no endpoint is given', () => {
+    });
+
+    describe('get()', () => {
+        it('should make a request to the given endpoint', () => {
             const mockRequestOptions: RequestInit = {
-                method: 'GET',
+                method: mockGetMethod,
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(mockBody)
             }
             const testInstance = createTestInstance();
 
-            testInstance.request(mockEndpoint, mockBody);
+            testInstance.get(mockEndpoint);
 
             expect(fetch).toHaveBeenCalledWith(`http://localhost:3001${mockEndpoint}`, mockRequestOptions);
-        })
+        });
+
+        it('should add params to the url if given', () => {
+            const mockSearchParams = new URLSearchParams({
+                mockVal: 'mockVal'
+            })
+            const mockRequestOptions: RequestInit = {
+                method: mockGetMethod,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+            const testInstance = createTestInstance();
+
+            testInstance.get(mockEndpoint, mockSearchParams);
+
+            expect(fetch).toHaveBeenCalledWith(`http://localhost:3001${mockEndpoint}?${mockSearchParams}`, mockRequestOptions);
+        });
+
     })
 
     function createTestInstance(): IFlightApiService {

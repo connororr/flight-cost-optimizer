@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader } from '@/components/shadcn/card'
 import { FlightPriceService, IFlightPriceService } from '@/services/flight-price-service';
 import { useData } from '@/context/DataContext';
 import ErrorMessage from '../error-message/error-message';
-import { FlightApiService, IFlightApiService } from "@/services/flight-api-service";
+import { useApiService } from "@/context/ApiServiceContext";
 
 
 export interface IRow {
@@ -20,7 +20,7 @@ export interface IRow {
 }
 
 export function useFlightInputs() {
-  const flightApiService: IFlightApiService = new FlightApiService();
+  const { flightApiService } = useApiService();
   const flightPriceService: IFlightPriceService = new FlightPriceService(flightApiService);
   const { loading, setFetchedData, setInProgress } = useData();
 
@@ -50,14 +50,18 @@ export function useFlightInputs() {
 
     if (isPastDate(rows)) {
       newErrorMessages.push('Please ensure your dates are not in the past.');
-
     }
 
     if (newErrorMessages.length === 0) {
-      setInProgress(true);
-      setFetchedData(null);
-      const flightPrices = await flightPriceService.getFlightPrices(rows);
-      setFetchedData(flightPrices);
+      try {
+        setInProgress(true);
+        setFetchedData(null);
+        const flightPrices = await flightPriceService.getFlightPrices(rows);
+        setFetchedData(flightPrices);
+      } catch (e) {
+        newErrorMessages.push('Error encountered when attempting to fetch relevant flight details. Please try again.');
+        setErrorMessages(newErrorMessages);
+      }
       setInProgress(false);
     } else {
       setErrorMessages(newErrorMessages);
@@ -126,12 +130,16 @@ export default function FlightInput() {
   } = useFlightInputs();
 
   return (
-    <main key="1" className="container mx-auto px-4 py-8 w-7/1">
-      <Card className="bg-white shadow-lg rounded-lg w-4/6">
+    <main key="1" className="px-4 pr-4 py-8 w-full lg:w-4/6">
+      <Card className="bg-white shadow-lg rounded-lg">
         <CardHeader>
           <h2 className="text-2xl font-semibold">Travel Planner</h2>
         </CardHeader>
-        <CardContent className="p-4 space-y-4">
+        <CardContent className="pt-4 pr-4 pb-4 space-y-4">
+          <p className="text-norwege">*<a className="underline" href="https://en.wikipedia.org/wiki/IATA_airport_code">IATA</a>
+            {" "}codes are needed as input values to do a search. Whilst the autocomplete functionality to get IATA codes is in
+            progress use the input field above to grab the right IATA code for the designated city.
+          </p>
           {rows.map((row, index) => (
             <div key={row.id} className="flex space-x-2">
               <Input
@@ -157,7 +165,7 @@ export default function FlightInput() {
                 min={new Date().toISOString().slice(0,10)}
                 data-testid="date-input"
               />
-              <Button type="button" 
+              <Button type="button"
                 onClick={() => removeRow(index)}
                 variant="ghost"
                 disabled={rows.length === 2}
@@ -172,7 +180,7 @@ export default function FlightInput() {
       ))}
       {rows.length !== 6 && (
         <Button 
-          className="w-1/4 bg-blue-500 hover:bg-blue-600 text-white min-w-[currentSize] flex items-center" 
+          className="w-fit md:w-1/4 bg-norwege hover:bg-blue-900 text-white min-w-[currentSize] flex items-center whitespace-normal h-fit"
           variant="solid"
           onClick={addRow}
         >
@@ -181,7 +189,7 @@ export default function FlightInput() {
         </Button> 
       )} 
           <Button 
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white" 
+            className="w-full bg-norwege hover:bg-blue-900 text-white"
             onClick={getFlightPrices}
             disabled={loading}
           >

@@ -3,6 +3,7 @@ import FlightInput, {IRow, useFlightInputs} from './flight-input';
 import { FlightPriceService, IFlightPriceService } from "@/services/flight-price-service";
 import user from "@testing-library/user-event";
 
+
 jest.mock('@/services/flight-price-service');
 jest.mock('@/context/DataContext', () => ({
     useData: () => ({
@@ -11,6 +12,13 @@ jest.mock('@/context/DataContext', () => ({
         setInProgress: jest.fn(),
     }),
 }));
+
+jest.mock('@/context/ApiServiceContext', () => ({
+    useApiService: () => ({
+        flightApiService: {}
+    }),
+}));
+
 describe('FlightInput', () => {
 
     const mockRows = createMockRows();
@@ -26,7 +34,9 @@ describe('FlightInput', () => {
     it('should search for flights given a set of travel details', async () => {
         const { result, rerender } = renderHook(() => useFlightInputs());
 
-        result.current.setRows(mockRows);
+        act(() => {
+            result.current.setRows(mockRows);
+        })
         rerender();
         await result.current.getFlightPrices();
 
@@ -40,7 +50,9 @@ describe('FlightInput', () => {
             const mockErrorRows = createMockRows(true);
             const { result, rerender } = renderHook(() => useFlightInputs());
 
-            result.current.setRows(mockErrorRows);
+            act(() => {
+                result.current.setRows(mockErrorRows);
+            })
             rerender();
             await result.current.getFlightPrices();
             rerender();
@@ -53,7 +65,9 @@ describe('FlightInput', () => {
         const mockErrorRows = createMockRowsInWrongChronologicalOrder();
         const { result, rerender } = renderHook(() => useFlightInputs());
 
-        result.current.setRows(mockErrorRows);
+        act(() => {
+            result.current.setRows(mockErrorRows);
+        })
         rerender();
         await result.current.getFlightPrices();
         rerender();
@@ -65,13 +79,35 @@ describe('FlightInput', () => {
         const mockErrorRows = createMockRowsInWrongChronologicalOrder('2020-03-03');
         const { result, rerender } = renderHook(() => useFlightInputs());
 
-        result.current.setRows(mockErrorRows);
+        act(() => {
+            result.current.setRows(mockErrorRows);
+        })
         rerender();
         await result.current.getFlightPrices();
         rerender();
         const errorMessageExists = result.current.errorMessages.includes('Please ensure your dates are not in the past.');
         expect(errorMessageExists).toBe(true);
     });
+
+    it('should report an error if an error is encountered when making a call to the backend', async() => {
+        mockFlightPriceService = {
+            getFlightPrices: jest.fn().mockRejectedValue(new Error('mock error'))
+        };
+        (FlightPriceService as jest.Mock).mockReturnValue(mockFlightPriceService);
+        const { result, rerender } = renderHook(() => useFlightInputs());
+
+        act(() => {
+            result.current.setRows(mockRows);
+        })
+        rerender();
+        await result.current.getFlightPrices();
+        rerender();
+
+        const errorMessageExists = result.current.errorMessages.includes(
+            'Error encountered when attempting to fetch relevant flight details. Please try again.'
+        );
+        expect(errorMessageExists).toBe(true);
+    })
 
     describe('when six rows are being displayed', () => {
         it('should not allow you to display any more rows by removing the add row button from the DOM', async () => {
@@ -103,13 +139,13 @@ describe('FlightInput', () => {
             id: 123,
             from: isError? '' : 'mock-from',
             to: isError ? '' : 'mock-to',
-            date: isError ? '' : 'mock-date'
+            date: isError ? '' : '2025-02-03'
         };
         const mockRow2: IRow = {
             id: 456,
             from: 'mock-from-2',
             to: 'mock-to-2',
-            date: 'mock-date-2'
+            date: '2025-03-09'
         }
         return [mockRow1, mockRow2];
     };
