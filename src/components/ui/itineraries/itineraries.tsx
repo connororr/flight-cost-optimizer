@@ -16,8 +16,7 @@ export default function Itineraries() {
           </>
         );
     }
-
-    if (!data.itineraries) {
+    if (!data.itineraries || !Array.isArray(data.itineraries) || data?.itineraries.length === 0) {
       return null;
     }
 

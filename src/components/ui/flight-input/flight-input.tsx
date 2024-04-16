@@ -50,14 +50,18 @@ export function useFlightInputs() {
 
     if (isPastDate(rows)) {
       newErrorMessages.push('Please ensure your dates are not in the past.');
-
     }
 
     if (newErrorMessages.length === 0) {
-      setInProgress(true);
-      setFetchedData(null);
-      const flightPrices = await flightPriceService.getFlightPrices(rows);
-      setFetchedData(flightPrices);
+      try {
+        setInProgress(true);
+        setFetchedData(null);
+        const flightPrices = await flightPriceService.getFlightPrices(rows);
+        setFetchedData(flightPrices);
+      } catch (e) {
+        newErrorMessages.push('Error encountered when attempting to fetch relevant flight details. Please try again.');
+        setErrorMessages(newErrorMessages);
+      }
       setInProgress(false);
     } else {
       setErrorMessages(newErrorMessages);

@@ -8,7 +8,8 @@ describe('FlightApiService', () => {
     const mockBody = { 
         mockVal: 'mock-val'
     };
-    const mockMethod = 'POST'
+    const mockPostMethod = 'POST';
+    const mockGetMethod = 'GET';
 
     beforeEach(() => {
 
@@ -17,7 +18,7 @@ describe('FlightApiService', () => {
     describe('post()', () => {
         it('should make a request to the given endpoint', () => {
             const mockRequestOptions: RequestInit = {
-                method: mockMethod,
+                method: mockPostMethod,
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -35,7 +36,7 @@ describe('FlightApiService', () => {
     describe('get()', () => {
         it('should make a request to the given endpoint', () => {
             const mockRequestOptions: RequestInit = {
-                method: mockMethod,
+                method: mockGetMethod,
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -52,7 +53,7 @@ describe('FlightApiService', () => {
                 mockVal: 'mockVal'
             })
             const mockRequestOptions: RequestInit = {
-                method: mockMethod,
+                method: mockGetMethod,
                 headers: {
                     'Content-Type': 'application/json',
                 },
