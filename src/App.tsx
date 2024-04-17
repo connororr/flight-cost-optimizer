@@ -9,7 +9,7 @@ import logoNoImage from './assets/images/logo-no-image.png';
 function App() {
   return (
     <div className="App">
-    <img src={logoNoImage} alt="exploria logo" width="235" />
+    <img src={logoNoImage} alt="exploria logo" width="235" className="pt-[10px] pl-[10px]" />
       <DataProvider>
         <ApiServiceProvider>
             <IataCodeSearch />
