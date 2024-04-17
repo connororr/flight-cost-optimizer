@@ -5,7 +5,7 @@ export interface IFlightApiService {
 }
 
 export class FlightApiService implements IFlightApiService {
-    private flightApiServiceBaseUrl: string = 'http://exploria-api.xyz';
+    private flightApiServiceBaseUrl: string = 'https://exploria-api.xyz';
 
     public post(endpoint: string, body?: unknown): Promise<unknown> {
         const requestOptions: RequestInit = {
