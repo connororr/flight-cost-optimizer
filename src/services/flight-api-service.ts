@@ -5,8 +5,7 @@ export interface IFlightApiService {
 }
 
 export class FlightApiService implements IFlightApiService {
-    // TODO: update this with the prod url when you get the prod url
-    private flightApiServiceBaseUrl: string = 'http://localhost:3001';
+    private flightApiServiceBaseUrl: string = 'http://exploria-api.xyz';
 
     public post(endpoint: string, body?: unknown): Promise<unknown> {
         const requestOptions: RequestInit = {
