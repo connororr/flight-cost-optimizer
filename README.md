@@ -1,4 +1,13 @@
-# Getting Started with Create React App
+# Flight-cost-optimizer
+
+This project is an SPA that connects to a backend server to allow a user to do a flight search using the Amadeus API.
+If the flight is a multi-city round trip flight where apart from the beginning and end destinations, you arrive and depart from
+the same location, then the results you will be shown will be the cheapest and shortest permutation of the input given. Ie.
+
+NYC - MAD, MAD - LON, LON - PAR, PAR - SIN
+
+will look through all permutations (of which there are 6 as you must depart from NYC and arrive in SIN), and find you the cheapest and shortest
+flight.
 
 This project was bootstrapped with [Create React App Configuration Override](https://github.com/dilanx/craco).
 
@@ -14,12 +23,9 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-To start the backend server, open a new terminal, go to `/server` and run the server via `npm start`
-
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
 
@@ -29,28 +35,7 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Deployment
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Deployment to exploria-test.xyz happens automatically when merging to main. Ideally CI/CD is added
+so tests are run automatically before releasing.
