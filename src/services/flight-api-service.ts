@@ -15,6 +15,7 @@ export class FlightApiService implements IFlightApiService {
             },
             body: JSON.stringify(body)
         }
+        console.log('test');
         return fetch(`${this.flightApiServiceBaseUrl}${endpoint}`, requestOptions)
     }
 
