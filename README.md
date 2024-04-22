@@ -1,8 +1,8 @@
-# Flight-cost-optimizer
+# Flight-cost-optimizer 
 
-This project is an SPA that connects to a backend server to allow a user to do a flight search using the Amadeus API.
-If the flight is a multi-city round trip flight where apart from the beginning and end destinations, you arrive and depart from
-the same location, then the results you will be shown will be the cheapest and shortest permutation of the input given. Ie.
+This project is an SPA that connects to a backend server ([Flight-cost-optimizer-server]()) to allow a user to do a flight search using the Amadeus API.
+If the flight is a multi-city round trip flight where, apart from the beginning and end destinations, you arrive and depart from
+the same location the results you will be shown will be the cheapest and shortest permutation of the input given. Ie.
 
 NYC - MAD, MAD - LON, LON - PAR, PAR - SIN
 
