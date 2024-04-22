@@ -38,5 +38,5 @@ Your app is ready to be deployed!
 
 # Deployment
 
-Deployment to exploria-test.xyz happens automatically when merging to main. Ideally CI/CD is added
+Deployment to [exploria-test.xyz](exploria-test.xyz) happens automatically when merging to main. Ideally CI/CD is added
 so tests are run automatically before releasing.
