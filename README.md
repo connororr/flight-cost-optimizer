@@ -1,6 +1,7 @@
 # Flight-cost-optimizer 
 
-This project is an SPA that connects to a backend server ([Flight-cost-optimizer-server]()) to allow a user to do a flight search using the Amadeus API.
+This project is an SPA that connects to a backend server, ([Flight-cost-optimizer-server](https://github.com/connororr/flight-cost-optimizer-server)),
+to allow a user to do a flight search using the Amadeus API.
 If the flight is a multi-city round trip flight where, apart from the beginning and end destinations, you arrive and depart from
 the same location the results you will be shown will be the cheapest and shortest permutation of the input given. Ie.
 
