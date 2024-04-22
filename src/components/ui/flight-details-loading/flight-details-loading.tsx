@@ -1,7 +1,3 @@
-/**
- * v0 by Vercel generated the initial template.
- * @see https://v0.dev/t/GPJs8mCGJWO
- */
 import React from 'react'
 import { CardContent, CardFooter, Card } from "@/components/shadcn/card"
 

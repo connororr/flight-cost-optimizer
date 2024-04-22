@@ -1,7 +1,3 @@
-/**
- * v0 by Vercel generated the initial template.
- * @see https://v0.dev/t/RrQK3NJoqpD
- */
 import React, { useState } from 'react'
 import { Input } from "@/components/shadcn/input"
 import { Button } from "@/components/shadcn/button"
