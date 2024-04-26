@@ -1,3 +1,7 @@
+/**
+ * v0 by Vercel generated the initial template.
+ * @see https://v0.dev/t/RrQK3NJoqpD
+ */
 import React, { useState } from 'react'
 import { Input } from "@/components/shadcn/input"
 import { Button } from "@/components/shadcn/button"
@@ -6,7 +10,8 @@ import { FlightPriceService, IFlightPriceService } from '@/services/flight-price
 import { useData } from '@/context/DataContext';
 import ErrorMessage from '../error-message/error-message';
 import { useApiService } from "@/context/ApiServiceContext";
-
+import { airportCodes } from "@/components/ui/flight-input/airport-codes";
+import { cityCodes } from "@/components/ui/flight-input/city-codes";
 
 export interface IRow {
   id: number;
@@ -133,8 +138,8 @@ export default function FlightInput() {
         </CardHeader>
         <CardContent className="pt-4 pr-4 pb-4 space-y-4">
           <p className="text-norwege">*<a className="underline" href="https://en.wikipedia.org/wiki/IATA_airport_code">IATA</a>
-            {" "}codes are needed as input values to do a search instead of city names. Whilst the autocomplete functionality to get IATA codes is in
-            progress use the input field above to grab the right IATA code for your desired city.
+            {" "}codes are needed as input values to do a search. Whilst the autocomplete functionality to get IATA codes is in
+            progress use the input field above to grab the right IATA code for the designated city.
           </p>
           {rows.map((row, index) => (
             <div key={row.id} className="flex space-x-2">
