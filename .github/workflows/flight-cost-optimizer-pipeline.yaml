@@ -1,7 +1,5 @@
 name: flight-cost-optimizer
-run-name: ${{
-github.ref.startsWith('refs/heads/') ? github.ref.substring(11) : github.ref
-}}
+run-name: ${{ github.ref_name }}
 on: [push]
 jobs:
   run-unit-tests:
