@@ -4,7 +4,7 @@ global.fetch = jest.fn().mockResolvedValue(undefined);
 
 
 describe('FlightApiService', () => {
-    const mockEndpoint = 'mock-endpoint';
+    const mockEndpoint = '/mock-endpoint';
     const mockBody = { 
         mockVal: 'mock-val'
     };

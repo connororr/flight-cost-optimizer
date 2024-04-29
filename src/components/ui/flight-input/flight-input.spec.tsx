@@ -54,7 +54,9 @@ describe('FlightInput', () => {
                 result.current.setRows(mockErrorRows);
             })
             rerender();
-            await result.current.getFlightPrices();
+            await act(async () => {
+                await result.current.getFlightPrices();
+            })
             rerender();
             const errorMessageExists = result.current.errorMessages.includes(expectedMessage);
             expect(errorMessageExists).toBe(true);
@@ -69,7 +71,9 @@ describe('FlightInput', () => {
             result.current.setRows(mockErrorRows);
         })
         rerender();
-        await result.current.getFlightPrices();
+        await act(async () => {
+            await result.current.getFlightPrices();
+        })
         rerender();
         const errorMessageExists = result.current.errorMessages.includes('Please ensure your dates are in chronological order.');
         expect(errorMessageExists).toBe(true);
@@ -83,7 +87,9 @@ describe('FlightInput', () => {
             result.current.setRows(mockErrorRows);
         })
         rerender();
-        await result.current.getFlightPrices();
+        await act(async () => {
+            await result.current.getFlightPrices();
+        })
         rerender();
         const errorMessageExists = result.current.errorMessages.includes('Please ensure your dates are not in the past.');
         expect(errorMessageExists).toBe(true);
@@ -100,7 +106,9 @@ describe('FlightInput', () => {
             result.current.setRows(mockRows);
         })
         rerender();
-        await result.current.getFlightPrices();
+        await act(async () => {
+            await result.current.getFlightPrices();
+        })
         rerender();
 
         const errorMessageExists = result.current.errorMessages.includes(

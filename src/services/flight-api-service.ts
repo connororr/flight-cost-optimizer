@@ -1,3 +1,4 @@
+import { config } from "@/constants/urls";
 
 export interface IFlightApiService {
     get(endpoint: string, params?: URLSearchParams): Promise<unknown>;
@@ -5,7 +6,7 @@ export interface IFlightApiService {
 }
 
 export class FlightApiService implements IFlightApiService {
-    private flightApiServiceBaseUrl: string = 'https://exploria-api.xyz';
+    private flightApiServiceBaseUrl: string = config.url;
 
     public post(endpoint: string, body?: unknown): Promise<unknown> {
         const requestOptions: RequestInit = {
