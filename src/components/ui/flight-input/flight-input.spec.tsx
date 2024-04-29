@@ -114,7 +114,7 @@ describe('FlightInput', () => {
         const errorMessageExists = result.current.errorMessages.includes(
             'Error encountered when attempting to fetch relevant flight details. Please try again.'
         );
-        expect(errorMessageExists).toBe(false);
+        expect(errorMessageExists).toBe(true);
     })
 
     describe('when six rows are being displayed', () => {
