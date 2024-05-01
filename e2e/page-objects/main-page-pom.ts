@@ -5,6 +5,7 @@ export class MainPage {
     constructor(private readonly page: Page) {}
 
 
+    // TODO [CO]: should use helper methods in the future
     public async goto() {
         await this.page.goto('https://exploria-test.xyz/');
     }
