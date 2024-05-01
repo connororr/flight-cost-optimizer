@@ -1,7 +1,13 @@
 import { Page, test } from "@playwright/test";
 import { getFutureDate } from "../utils";
 
-export class MainPage {
+export interface IMainPage {
+    goto(): Promise<void>;
+    searchForFlights(fromOne: string, toOne: string, fromTwo: string, toTwo: string): Promise<void>;
+    expectFlightResults(flightResult: string, stopover: string): Promise<void>;
+}
+
+export class MainPage implements IMainPage {
     constructor(private readonly page: Page) {}
 
 
@@ -17,13 +23,19 @@ export class MainPage {
         fromTwo: string,
         toTwo: string
     ) {
-        this.page.locator('from1').fill(fromOne);
-        this.page.locator('from2').fill(fromTwo);
-        this.page.locator('date1').fill(getFutureDate(2));
-        this.page.locator('to1').fill(toOne);
-        this.page.locator('to2').fill(toTwo);
-        this.page.locator('date2').fill(getFutureDate(4));
-        this.page.getByText('Search Flights');
+        await this.page.locator('from1').fill(fromOne);
+        await this.page.locator('from2').fill(fromTwo);
+        await this.page.locator('date1').fill(getFutureDate(2));
+        await this.page.locator('to1').fill(toOne);
+        await this.page.locator('to2').fill(toTwo);
+        await this.page.locator('date2').fill(getFutureDate(4));
+        await this.page.getByText('Search Flights').click();
+    }
+
+    @boxedStep
+    public async expectFlightResults(flightResult: string, stopover: string) {
+        await expect(this.page.getByText(flightResult)).toBeVisible();
+        await expect(this.page.getByText(stopover)).toBeVisible();
     }
 
 }
