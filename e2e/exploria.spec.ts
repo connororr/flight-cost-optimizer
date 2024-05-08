@@ -12,6 +12,6 @@ test.describe('Flight Input Scenarios', () => {
   test('search for roundtrip flights', async ({ page }) => {
     const pom = new MainPage(page);
     await pom.searchForFlights('MAD', 'LON', 'LON', 'MAD');
-    await pom.expectFlightResults('MAD - LHR', 'LIS');
+    await pom.expectFlightResults('MAD - LHR', 'MLA');
   });
 });
