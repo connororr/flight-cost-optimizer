@@ -14,4 +14,10 @@ test.describe('Flight Input Scenarios', () => {
     await pom.searchForFlights('MAD', 'LON', 'LON', 'MAD');
     await pom.expectFlightResults('MAD - LHR', 'MLA');
   });
+
+  test('get IATA code', async ({ page }) => {
+    const pom = new MainPage(page);
+    await pom.searchForIataCode('New York');
+    await pom.expectIataCode('JFK');
+  });
 });

@@ -4,6 +4,8 @@ import { getFutureDate } from "../utils";
 export interface IMainPage {
     goto(): Promise<void>;
     searchForFlights(fromOne: string, toOne: string, fromTwo: string, toTwo: string): Promise<void>;
+    searchForIataCode(input: string): Promise<void>;
+    expectIataCode(code: string): Promise<void>;
     expectFlightResults(flightResult: string, stopover: string): Promise<void>;
 }
 
@@ -30,6 +32,19 @@ export class MainPage implements IMainPage {
         await this.page.locator('#to2').fill(toTwo);
         await this.page.locator('#date2').fill(getFutureDate(4));
         await this.page.getByText('Search Flights').click();
+    }
+
+    @boxedStep
+    public async searchForIataCode(
+        input: string
+    ) {
+        await this.page.getByPlaceholder('City name').fill(input);
+        await this.page.getByText('Get Code!').click();
+    }
+
+    @boxedStep
+    public async expectIataCode(code: string) {
+        await expect(this.page.getByText(code)).toBeVisible({ timeout: 10000 });
     }
 
     @boxedStep

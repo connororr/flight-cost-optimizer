@@ -40,3 +40,12 @@ Your app is ready to be deployed!
 
 Deployment to [exploria-test.xyz](exploria-test.xyz) happens automatically when merging to main. Ideally CI/CD is added
 so tests are run automatically before releasing.
+
+# End-to-end Tests
+
+End-to-end tests are available via [Playwright](https://playwright.dev/). Curently they hit production 
+until we can get a stage environment to host these on. To run end-to-end tests via npm:
+
+```
+npm run e2e-tests
+```
