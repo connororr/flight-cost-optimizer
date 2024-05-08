@@ -12,7 +12,7 @@ test.describe('Flight Input Scenarios', () => {
   test('search for roundtrip flights', async ({ page }) => {
     const pom = new MainPage(page);
     await pom.searchForFlights('MAD', 'LON', 'LON', 'MAD');
-    await pom.expectFlightResults('MAD - LHR', 'MLA');
+    await pom.expectFlightResults('MAD - LHR', 'Direct');
   });
 
   test('get IATA code', async ({ page }) => {
@@ -20,4 +20,10 @@ test.describe('Flight Input Scenarios', () => {
     await pom.searchForIataCode('New York');
     await pom.expectIataCode('JFK');
   });
+
+  test('Show a valid error message', async ({ page}) => {
+    const pom = new MainPage(page);
+    await pom.searchForFlights('', '', '', '');
+    await pom.expectErrorMessage(4);
+  })
 });

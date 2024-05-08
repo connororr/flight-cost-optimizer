@@ -7,6 +7,7 @@ export interface IMainPage {
     searchForIataCode(input: string): Promise<void>;
     expectIataCode(code: string): Promise<void>;
     expectFlightResults(flightResult: string, stopover: string): Promise<void>;
+    expectErrorMessage(errorMessageCount: number): Promise<void>;
 }
 
 export class MainPage implements IMainPage {
@@ -51,6 +52,15 @@ export class MainPage implements IMainPage {
     public async expectFlightResults(flightResult: string, stopover: string) {
         await expect(this.page.getByText(flightResult).first()).toBeVisible({ timeout: 10000 });
         await expect(this.page.getByText(stopover).first()).toBeVisible({ timeout: 10000 });
+    }
+
+    @boxedStep
+    public async expectErrorMessage(errorMessageCount: number) {
+        const errrorLocators = await this.page.getByText('Error').all();
+        for (const locator of errrorLocators) {
+            await expect(locator).toBeVisible({ timeout: 10000 });
+        }
+        expect(errrorLocators.length).toBe(errorMessageCount);
     }
 
 }
