@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
+    "@playwright/test": "^1.43.1",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
     "jest": "^27.5.1",
@@ -34,7 +35,8 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "craco eject",
+    "e2e-tests": "npx playwright test"
   },
   "eslintConfig": {
     "extends": [
