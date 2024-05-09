@@ -11,11 +11,11 @@ export interface IMainPage {
 }
 
 export class MainPage implements IMainPage {
-    constructor(private readonly page: Page) {}
+    constructor(private readonly _page: Page) {}
 
 
     public async goto() {
-        await this.page.goto('https://exploria-test.xyz/');
+        await this._page.goto('https://exploria-test.xyz/');
     }
 
     @boxedStep
@@ -25,37 +25,37 @@ export class MainPage implements IMainPage {
         fromTwo: string,
         toTwo: string
     ) {
-        await this.page.locator('#from1').fill(fromOne);
-        await this.page.locator('#from2').fill(fromTwo);
-        await this.page.locator('#date1').fill(getFutureDate(2));
-        await this.page.locator('#to1').fill(toOne);
-        await this.page.locator('#to2').fill(toTwo);
-        await this.page.locator('#date2').fill(getFutureDate(4));
-        await this.page.getByText('Search Flights').click();
+        await this._page.locator('#from1').fill(fromOne);
+        await this._page.locator('#from2').fill(fromTwo);
+        await this._page.locator('#date1').fill(getFutureDate(2));
+        await this._page.locator('#to1').fill(toOne);
+        await this._page.locator('#to2').fill(toTwo);
+        await this._page.locator('#date2').fill(getFutureDate(4));
+        await this._page.getByText('Search Flights').click();
     }
 
     @boxedStep
     public async searchForIataCode(
         input: string
     ) {
-        await this.page.getByPlaceholder('City name').fill(input);
-        await this.page.getByText('Get Code!').click();
+        await this._page.getByPlaceholder('City name').fill(input);
+        await this._page.getByText('Get Code!').click();
     }
 
     @boxedStep
     public async expectIataCode(code: string) {
-        await expect(this.page.getByText(code)).toBeVisible({ timeout: 10000 });
+        await expect(this._page.getByText(code)).toBeVisible({ timeout: 10000 });
     }
 
     @boxedStep
     public async expectFlightResults(flightResult: string, stopover: string) {
-        await expect(this.page.getByText(flightResult).first()).toBeVisible({ timeout: 10000 });
-        await expect(this.page.getByText(stopover).first()).toBeVisible({ timeout: 10000 });
+        await expect(this._page.getByText(flightResult).first()).toBeVisible({ timeout: 10000 });
+        await expect(this._page.getByText(stopover).first()).toBeVisible({ timeout: 10000 });
     }
 
     @boxedStep
     public async expectErrorMessage(errorMessageCount: number) {
-        const errrorLocators = await this.page.getByText('Error').all();
+        const errrorLocators = await this._page.getByText('Error').all();
         for (const locator of errrorLocators) {
             await expect(locator).toBeVisible({ timeout: 10000 });
         }

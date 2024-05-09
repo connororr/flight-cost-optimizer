@@ -43,7 +43,23 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "@typescript-eslint/naming-convention": [
+        "error",
+        {
+          "selector": "memberLike",
+          "format": ["camelCase"],
+          "leadingUnderscore": "forbid"
+        },
+        {
+          "selector": "memberLike",
+          "modifiers": ["private"],
+          "format": ["camelCase"],
+          "leadingUnderscore": "require"
+        }
+      ]
+    }
   },
   "jest": {
     "moduleNameMapper": {

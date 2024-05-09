@@ -10,8 +10,6 @@ import { FlightPriceService, IFlightPriceService } from '@/services/flight-price
 import { useData } from '@/context/DataContext';
 import ErrorMessage from '../error-message/error-message';
 import { useApiService } from "@/context/ApiServiceContext";
-import { airportCodes } from "@/components/ui/flight-input/airport-codes";
-import { cityCodes } from "@/components/ui/flight-input/city-codes";
 
 export interface IRow {
   id: number;
