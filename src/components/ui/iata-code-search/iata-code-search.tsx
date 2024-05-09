@@ -1,17 +1,21 @@
-import { Card, CardContent } from "@/components/shadcn/card";
-import React, { useState } from "react";
-import { Input } from "@/components/shadcn/input";
-import { Button } from "@/components/shadcn/button";
-import { useApiService } from "@/context/ApiServiceContext";
-import { IIataCodeService, IataCodeService } from "@/services/iata-code-service";
+import { Card, CardContent } from '@/components/shadcn/card';
+import React, { useState } from 'react';
+import { Input } from '@/components/shadcn/input';
+import { Button } from '@/components/shadcn/button';
+import { useApiService } from '@/context/ApiServiceContext';
+import {
+    IIataCodeService,
+    IataCodeService,
+} from '@/services/iata-code-service';
 
 export function useCityNameInputs() {
-
     const [city, setCity] = useState<string>('');
-    const [iataCode, setIataCode ] = useState<string>('');
+    const [iataCode, setIataCode] = useState<string>('');
     const [isLoading, setLoading] = useState<boolean>(false);
     const { flightApiService } = useApiService();
-    const iataCodeService: IIataCodeService = new IataCodeService(flightApiService);
+    const iataCodeService: IIataCodeService = new IataCodeService(
+        flightApiService
+    );
 
     async function getIataCodes() {
         try {
@@ -28,7 +32,6 @@ export function useCityNameInputs() {
 }
 
 export default function IataCodeSearch() {
-
     const { getIataCodes, setCity, iataCode, isLoading } = useCityNameInputs();
 
     return (
@@ -48,9 +51,7 @@ export default function IataCodeSearch() {
                     >
                         Get Code!
                     </Button>
-                    <div
-                        className="w-1/4 !m-0 text-[#017396]"
-                    >{iataCode}</div>
+                    <div className="w-1/4 !m-0 text-[#017396]">{iataCode}</div>
                 </CardContent>
             </Card>
         </main>

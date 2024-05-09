@@ -1,7 +1,7 @@
-import { useData } from "@/context/DataContext";
-import FlightDetails from "../flight-details/flight-details";
+import { useData } from '@/context/DataContext';
+import FlightDetails from '../flight-details/flight-details';
 import React from 'react';
-import FlightDetailsLoading from "../flight-details-loading/flight-details-loading";
+import FlightDetailsLoading from '../flight-details-loading/flight-details-loading';
 
 export default function Itineraries() {
     const data = useData();
@@ -9,22 +9,26 @@ export default function Itineraries() {
 
     if (!data.itineraries && data.loading) {
         return (
-          <>
-            {[...Array(timesToRepeat)].map(() => (
-              <FlightDetailsLoading />
-            ))}
-          </>
+            <>
+                {[...Array(timesToRepeat)].map(() => (
+                    <FlightDetailsLoading />
+                ))}
+            </>
         );
     }
-    if (!data.itineraries || !Array.isArray(data.itineraries) || data?.itineraries.length === 0) {
-      return null;
+    if (
+        !data.itineraries ||
+        !Array.isArray(data.itineraries) ||
+        data?.itineraries.length === 0
+    ) {
+        return null;
     }
 
     return (
-      <div>
-        {data.itineraries.map((itinerary) => (
-          <FlightDetails itinerary={itinerary} />
-        ))}
-      </div>
+        <div>
+            {data.itineraries.map((itinerary) => (
+                <FlightDetails itinerary={itinerary} />
+            ))}
+        </div>
     );
 }

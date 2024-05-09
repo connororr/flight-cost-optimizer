@@ -1,7 +1,7 @@
-import {DataProvider, useData} from "@/context/DataContext";
-import {FlightLeg, Itinerary, Segment} from "@/constants/response";
-import { render, screen, waitFor} from "@testing-library/react";
-import user from "@testing-library/user-event";
+import { DataProvider, useData } from '@/context/DataContext';
+import { FlightLeg, Itinerary, Segment } from '@/constants/response';
+import { render, screen, waitFor } from '@testing-library/react';
+import user from '@testing-library/user-event';
 
 const mockItinerary = createItinerary();
 
@@ -12,11 +12,15 @@ const TestComponent = () => {
         <>
             <p>is loading: {`${loading}`}</p>
             <p>itineraries exist: {`${!!itineraries}`}</p>
-            <button onClick={() => setInProgress(!loading)}>setInProgress</button>
-            <button onClick={() => setFetchedData([mockItinerary])}>setFetchedData</button>
+            <button onClick={() => setInProgress(!loading)}>
+                setInProgress
+            </button>
+            <button onClick={() => setFetchedData([mockItinerary])}>
+                setFetchedData
+            </button>
         </>
-    )
-}
+    );
+};
 describe('DataContext', () => {
     describe('loading', () => {
         it('should be instantiated', async () => {
@@ -37,10 +41,12 @@ describe('DataContext', () => {
                     <TestComponent />
                 </DataProvider>
             );
-            const itinerariesElement = await screen.findByText('itineraries exist: false');
+            const itinerariesElement = await screen.findByText(
+                'itineraries exist: false'
+            );
             expect(itinerariesElement).toBeInTheDocument();
         });
-    })
+    });
 
     describe('setInProgress()', () => {
         it('should set loading', async () => {
@@ -67,50 +73,54 @@ describe('DataContext', () => {
                 </DataProvider>
             );
 
-            expect(screen.getByText('itineraries exist: false')).toBeInTheDocument();
+            expect(
+                screen.getByText('itineraries exist: false')
+            ).toBeInTheDocument();
             const setFetchedDataButton = screen.getByText('setFetchedData');
             user.click(setFetchedDataButton);
             await new Promise(process.nextTick);
-            expect(screen.getByText('itineraries exist: true')).toBeInTheDocument();
+            expect(
+                screen.getByText('itineraries exist: true')
+            ).toBeInTheDocument();
         });
     });
-})
+});
 
 function createItinerary(): Itinerary {
     const mockSegment: Segment = {
         duration: '4H',
         departure: {
             at: 'mockAt',
-            iataCode: 'mockIataCode'
+            iataCode: 'mockIataCode',
         },
         arrival: {
             at: 'mockArrivalAt',
-            iataCode: 'mockIataCode'
+            iataCode: 'mockIataCode',
         },
-        carrierCode: 'mockCarrierCode'
+        carrierCode: 'mockCarrierCode',
     };
 
     const mockSegmentTwo: Segment = {
         duration: '5H',
         departure: {
             at: 'mockAtTwo',
-            iataCode: 'mockIataCodeTwo'
+            iataCode: 'mockIataCodeTwo',
         },
         arrival: {
             at: 'mockArrivalAtTwo',
-            iataCode: 'mockIataCodeTwo'
+            iataCode: 'mockIataCodeTwo',
         },
-        carrierCode: 'mockCarrierCodeTwo'
-    }
+        carrierCode: 'mockCarrierCodeTwo',
+    };
     const flightLeg: FlightLeg = {
         duration: '9H',
         from: 'London',
         to: 'San Francisco',
         numberOfStopovers: 1,
-        segments: [mockSegment, mockSegmentTwo]
+        segments: [mockSegment, mockSegmentTwo],
     };
     return {
         cost: '9000',
-        flightLegs: [flightLeg]
+        flightLegs: [flightLeg],
     };
 }
