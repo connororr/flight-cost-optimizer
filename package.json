@@ -36,7 +36,7 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",
-    "e2e-test": "npx playwright test"
+    "e2e-tests": "npx playwright test"
   },
   "eslintConfig": {
     "extends": [
