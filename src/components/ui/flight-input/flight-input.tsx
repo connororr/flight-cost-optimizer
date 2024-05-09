@@ -52,6 +52,7 @@ export function useFlightInputs() {
       try {
         setInProgress(true);
         setFetchedData(null);
+        setErrorMessages([]);
         const flightPrices = await flightPriceService.getFlightPrices(rows);
         setFetchedData(flightPrices);
       } catch (e) {
