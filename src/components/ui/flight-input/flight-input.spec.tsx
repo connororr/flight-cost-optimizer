@@ -32,12 +32,11 @@ describe('FlightInput', () => {
     });
 
     it('should search for flights given a set of travel details', async () => {
-        const { result, rerender } = renderHook(() => useFlightInputs());
+        const { result } = renderHook(() => useFlightInputs());
 
         act(() => {
             result.current.setRows(mockRows);
         })
-        rerender();
         await result.current.getFlightPrices();
 
         expect(mockFlightPriceService.getFlightPrices).toHaveBeenCalledWith(mockRows);
@@ -48,16 +47,14 @@ describe('FlightInput', () => {
         ['date', 'Please enter a valid departure date.']])('should show an error when a \'%s\' input field is not filled in',
         async (_, expectedMessage) => {
             const mockErrorRows = createMockRows(true);
-            const { result, rerender } = renderHook(() => useFlightInputs());
+            const { result,  } = renderHook(() => useFlightInputs());
 
             act(() => {
                 result.current.setRows(mockErrorRows);
             })
-            rerender();
             await act(async () => {
                 await result.current.getFlightPrices();
             })
-            rerender();
             const errorMessageExists = result.current.errorMessages.includes(expectedMessage);
             expect(errorMessageExists).toBe(true);
     });
@@ -65,34 +62,54 @@ describe('FlightInput', () => {
 
     it('should show an error when calendar dates are not in chronological order', async() => {
         const mockErrorRows = createMockRowsInWrongChronologicalOrder();
-        const { result, rerender } = renderHook(() => useFlightInputs());
+        const { result } = renderHook(() => useFlightInputs());
 
         act(() => {
             result.current.setRows(mockErrorRows);
         })
-        rerender();
         await act(async () => {
             await result.current.getFlightPrices();
         })
-        rerender();
+
         const errorMessageExists = result.current.errorMessages.includes('Please ensure your dates are in chronological order.');
         expect(errorMessageExists).toBe(true);
     });
 
     it('should throw an error if dates earlier than today are used', async () => {
         const mockErrorRows = createMockRowsInWrongChronologicalOrder('2020-03-03');
-        const { result, rerender } = renderHook(() => useFlightInputs());
+        const { result } = renderHook(() => useFlightInputs());
 
         act(() => {
             result.current.setRows(mockErrorRows);
         })
-        rerender();
         await act(async () => {
             await result.current.getFlightPrices();
         })
-        rerender();
         const errorMessageExists = result.current.errorMessages.includes('Please ensure your dates are not in the past.');
         expect(errorMessageExists).toBe(true);
+    });
+
+    it('should clear error messages when making a search request', async () => {
+        const mockErrorRows = createMockRows(true);
+        const { result } = renderHook(() => useFlightInputs());
+
+        act(() => {
+            result.current.setRows(mockErrorRows);
+        })
+        await act(async () => {
+            await result.current.getFlightPrices();
+        })
+
+        expect(result.current.errorMessages.length).toBeGreaterThan(0);
+
+        act(() => {
+            result.current.setRows(mockRows);
+        })
+        await act(async () => {
+            await result.current.getFlightPrices();
+        })
+
+        expect(result.current.errorMessages.length).toBe(0);
     });
 
     it('should report an error if an error is encountered when making a call to the backend', async() => {
@@ -100,16 +117,14 @@ describe('FlightInput', () => {
             getFlightPrices: jest.fn().mockRejectedValue(new Error('mock error'))
         };
         (FlightPriceService as jest.Mock).mockReturnValue(mockFlightPriceService);
-        const { result, rerender } = renderHook(() => useFlightInputs());
+        const { result } = renderHook(() => useFlightInputs());
 
         act(() => {
             result.current.setRows(mockRows);
         })
-        rerender();
         await act(async () => {
             await result.current.getFlightPrices();
         })
-        rerender();
 
         const errorMessageExists = result.current.errorMessages.includes(
             'Error encountered when attempting to fetch relevant flight details. Please try again.'
