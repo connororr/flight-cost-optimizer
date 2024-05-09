@@ -9,6 +9,10 @@ import { IataInfo } from "@/constants";
  * suggestions: the subset of values that are shown to the user from the main data set once they've input a value
  * onSuggestionsClearRequested: is called when you need to set your suggestions to an empty array
  * onSuggestionsFetchRequested: is called every time your suggestions array needs to be recalculated
+ * renderSuggestion: Renders each suggestion result in the DOM
+ * getSuggestionValue: This is the function that grabs the value of the suggestion when it is selected (either clicked on or highlighted)
+ * inputProps: this is the placeholder for passing arbitrary values to the autoSuggest component from this app, ie pass things like
+ *             tailwind styling here
  */
 
 const codes = [...cityCodes, ...airportCodes];
@@ -20,7 +24,6 @@ interface AutoSuggestInputProps {
 
 export default function AutoSuggestInput({ id, placeholder }: AutoSuggestInputProps) {
     const [suggestions, setSuggestions] = useState([]);
-
     function _renderSuggestion(suggestion: IataInfo) {
         return <div className="p-3  border border-1">{suggestion.name}</div>;
     }
@@ -45,6 +48,16 @@ export default function AutoSuggestInput({ id, placeholder }: AutoSuggestInputPr
             );
     }
 
+    function _getSuggestionValue(suggestion: IataInfo): void {
+       // TODO [CO]: To implement
+    }
+
+    // TODO [CO]: To implement
+    const inputProps = {
+        placeholder,
+        onChange: () => void
+    }
+
 
     return (
         <div id={id}>
@@ -53,6 +66,8 @@ export default function AutoSuggestInput({ id, placeholder }: AutoSuggestInputPr
                 onSuggestionsFetchRequested={_onSuggestionsFetchRequested}
                 onSuggestionsClearRequested={_onSuggestionsClearRequested}
                 renderSuggestion={_renderSuggestion}
+                getSuggestionValue={getSuggestionValue}
+                inputProps={inputProps}
             />
         </div>
     )
