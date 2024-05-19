@@ -10,6 +10,7 @@ import { FlightPriceService, IFlightPriceService } from '@/services/flight-price
 import { useData } from '@/context/DataContext';
 import ErrorMessage from '../error-message/error-message';
 import { useApiService } from "@/context/ApiServiceContext";
+import AutoSuggestInput from "@/components/ui/auto-suggest";
 
 export interface IRow {
   id: number;
@@ -142,13 +143,14 @@ export default function FlightInput() {
           </p>
           {rows.map((row, index) => (
             <div key={row.id} className="flex space-x-2">
-              <Input
-                className="flex-grow"
-                id={`from${index + 1}`}
-                placeholder="From"
-                value={row.from}
-                onChange={(e) => handleInputChange(index, 'from', e.target.value)}
-              />
+              <AutoSuggestInput id={index + 1} placeholder={'From'} handleInputChange={handleInputChange} />
+              {/*<Input*/}
+              {/*  className="flex-grow"*/}
+              {/*  id={`from${index + 1}`}*/}
+              {/*  placeholder="From"*/}
+              {/*  value={row.from}*/}
+              {/*  onChange={(e) => handleInputChange(index, 'from', e.target.value)}*/}
+              {/*/>*/}
               <Input
                 className="flex-grow"
                 id={`to${index + 1}`}

@@ -3,6 +3,7 @@ import Autosuggest from 'react-autosuggest';
 import { cityCodes } from "@/components/ui/flight-input/city-codes";
 import { airportCodes } from "@/components/ui/flight-input/airport-codes";
 import { IataInfo } from "@/constants";
+import { IRow } from "@/components/ui/flight-input/flight-input";
 
 /*
  *
@@ -14,31 +15,32 @@ import { IataInfo } from "@/constants";
  * inputProps: this is the placeholder for passing arbitrary values to the autoSuggest component from this app, ie pass things like
  *             tailwind styling here
  */
+type HandleInputChangeFunc = (index: number, field: keyof IRow, value: string) => void;
 
 const codes = [...cityCodes, ...airportCodes];
 
 interface AutoSuggestInputProps {
-    id: string;
+    id: number;
     placeholder: string;
+    handleInputChange: HandleInputChangeFunc;
 }
 
-export default function AutoSuggestInput({ id, placeholder }: AutoSuggestInputProps) {
+export default function AutoSuggestInput({ id, placeholder, handleInputChange }: AutoSuggestInputProps) {
     const [suggestions, setSuggestions] = useState([]);
+    const [value, setValue] = useState('');
+
     function _renderSuggestion(suggestion: IataInfo) {
         return <div className="p-3  border border-1">{suggestion.name}</div>;
     }
-
     function _onSuggestionsClearRequested() {
         setSuggestions([]);
     }
-
     function _onSuggestionsFetchRequested(value: string): void {
         const newSuggestions = _getSuggestions(value);
         setSuggestions(newSuggestions);
     }
-
-    function _getSuggestions(value: string): Array<IataInfo>  {
-        const inputValue = value.trim().toLowerCase();
+    function _getSuggestions(value: unknown): Array<IataInfo>  {
+        const inputValue = value.value.toLowerCase();
         const inputLength = inputValue.length;
 
         return inputLength === 0
@@ -48,14 +50,17 @@ export default function AutoSuggestInput({ id, placeholder }: AutoSuggestInputPr
             );
     }
 
-    function _getSuggestionValue(suggestion: IataInfo): void {
-       // TODO [CO]: To implement
+    function _getSuggestionValue(suggestion: IataInfo): IataInfo {
+       return suggestion.iataCode;
     }
 
-    // TODO [CO]: To implement
     const inputProps = {
         placeholder,
-        onChange: () => void
+        value,
+        onChange: function(_, { newValue }): void {
+            setValue(newValue);
+            handleInputChange(id, 'placeholder', newValue);
+        }
     }
 
 
@@ -66,7 +71,7 @@ export default function AutoSuggestInput({ id, placeholder }: AutoSuggestInputPr
                 onSuggestionsFetchRequested={_onSuggestionsFetchRequested}
                 onSuggestionsClearRequested={_onSuggestionsClearRequested}
                 renderSuggestion={_renderSuggestion}
-                getSuggestionValue={getSuggestionValue}
+                getSuggestionValue={_getSuggestionValue}
                 inputProps={inputProps}
             />
         </div>
