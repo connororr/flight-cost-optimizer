@@ -1,4 +1,4 @@
-export type Itineraries = Array<Itinerary>
+export type Itineraries = Array<Itinerary>;
 
 export interface Itinerary {
     cost: string;

@@ -1,7 +1,6 @@
-import {FlightLeg, Itinerary, Segment} from "@/constants/response";
-import {render, screen} from "@testing-library/react";
-import FlightDetails from "@/components/ui/flight-details/flight-details";
-
+import { FlightLeg, Itinerary, Segment } from '@/constants/response';
+import { render, screen } from '@testing-library/react';
+import FlightDetails from '@/components/ui/flight-details/flight-details';
 
 describe('FlightDetails', () => {
     const mockSegmentOne: Segment = createMockSegmentOne();
@@ -32,17 +31,16 @@ describe('FlightDetails', () => {
     });
 
     function createDirectItinerary(): Itinerary {
-
         const flightLeg: FlightLeg = {
             duration: '4H',
             from: 'London',
             to: 'San Francisco',
             numberOfStopovers: 0,
-            segments: [mockSegmentOne]
+            segments: [mockSegmentOne],
         };
         return {
             cost: '9000',
-            flightLegs: [flightLeg]
+            flightLegs: [flightLeg],
         };
     }
     function createItineraryWithStopovers(): Itinerary {
@@ -51,11 +49,11 @@ describe('FlightDetails', () => {
             from: 'London',
             to: 'San Francisco',
             numberOfStopovers: 1,
-            segments: [mockSegmentOne, mockSegmentTwo]
+            segments: [mockSegmentOne, mockSegmentTwo],
         };
         return {
             cost: '9000',
-            flightLegs: [flightLeg]
+            flightLegs: [flightLeg],
         };
     }
 
@@ -64,13 +62,13 @@ describe('FlightDetails', () => {
             duration: '4H',
             departure: {
                 at: 'mockAt',
-                iataCode: 'MAD'
+                iataCode: 'MAD',
             },
             arrival: {
                 at: 'mockArrivalAt',
-                iataCode: 'CDG'
+                iataCode: 'CDG',
             },
-            carrierCode: 'mockCarrierCode'
+            carrierCode: 'mockCarrierCode',
         };
     }
 
@@ -79,13 +77,13 @@ describe('FlightDetails', () => {
             duration: '5H',
             departure: {
                 at: 'mockAtTwo',
-                iataCode: 'CDG'
+                iataCode: 'CDG',
             },
             arrival: {
                 at: 'mockArrivalAtTwo',
-                iataCode: 'NYC'
+                iataCode: 'NYC',
             },
-            carrierCode: 'mockCarrierCodeTwo'
+            carrierCode: 'mockCarrierCodeTwo',
         };
     }
-})
+});

@@ -1,8 +1,10 @@
-import { render, renderHook, screen, act } from "@testing-library/react";
-import FlightInput, {IRow, useFlightInputs} from './flight-input';
-import { FlightPriceService, IFlightPriceService } from "@/services/flight-price-service";
-import user from "@testing-library/user-event";
-
+import { render, renderHook, screen, act } from '@testing-library/react';
+import FlightInput, { IRow, useFlightInputs } from './flight-input';
+import {
+    FlightPriceService,
+    IFlightPriceService,
+} from '@/services/flight-price-service';
+import user from '@testing-library/user-event';
 
 jest.mock('@/services/flight-price-service');
 jest.mock('@/context/DataContext', () => ({
@@ -15,20 +17,21 @@ jest.mock('@/context/DataContext', () => ({
 
 jest.mock('@/context/ApiServiceContext', () => ({
     useApiService: () => ({
-        flightApiService: {}
+        flightApiService: {},
     }),
 }));
 
 describe('FlightInput', () => {
-
     const mockRows = createMockRows();
     let mockFlightPriceService: jest.Mocked<IFlightPriceService>;
 
     beforeEach(() => {
         mockFlightPriceService = {
-            getFlightPrices: jest.fn()
+            getFlightPrices: jest.fn(),
         };
-        (FlightPriceService as jest.Mock).mockReturnValue(mockFlightPriceService);
+        (FlightPriceService as jest.Mock).mockReturnValue(
+            mockFlightPriceService
+        );
     });
 
     it('should search for flights given a set of travel details', async () => {
@@ -36,56 +39,67 @@ describe('FlightInput', () => {
 
         act(() => {
             result.current.setRows(mockRows);
-        })
+        });
         await result.current.getFlightPrices();
 
-        expect(mockFlightPriceService.getFlightPrices).toHaveBeenCalledWith(mockRows);
+        expect(mockFlightPriceService.getFlightPrices).toHaveBeenCalledWith(
+            mockRows
+        );
     });
 
-    it.each([['from', 'Please enter a valid departure location.'],
+    it.each([
+        ['from', 'Please enter a valid departure location.'],
         ['to', 'Please enter a valid arrival location.'],
-        ['date', 'Please enter a valid departure date.']])('should show an error when a \'%s\' input field is not filled in',
+        ['date', 'Please enter a valid departure date.'],
+    ])(
+        "should show an error when a '%s' input field is not filled in",
         async (_, expectedMessage) => {
             const mockErrorRows = createMockRows(true);
-            const { result,  } = renderHook(() => useFlightInputs());
+            const { result } = renderHook(() => useFlightInputs());
 
             act(() => {
                 result.current.setRows(mockErrorRows);
-            })
+            });
             await act(async () => {
                 await result.current.getFlightPrices();
-            })
-            const errorMessageExists = result.current.errorMessages.includes(expectedMessage);
+            });
+            const errorMessageExists =
+                result.current.errorMessages.includes(expectedMessage);
             expect(errorMessageExists).toBe(true);
-    });
+        }
+    );
 
-
-    it('should show an error when calendar dates are not in chronological order', async() => {
+    it('should show an error when calendar dates are not in chronological order', async () => {
         const mockErrorRows = createMockRowsInWrongChronologicalOrder();
         const { result } = renderHook(() => useFlightInputs());
 
         act(() => {
             result.current.setRows(mockErrorRows);
-        })
+        });
         await act(async () => {
             await result.current.getFlightPrices();
-        })
+        });
 
-        const errorMessageExists = result.current.errorMessages.includes('Please ensure your dates are in chronological order.');
+        const errorMessageExists = result.current.errorMessages.includes(
+            'Please ensure your dates are in chronological order.'
+        );
         expect(errorMessageExists).toBe(true);
     });
 
     it('should throw an error if dates earlier than today are used', async () => {
-        const mockErrorRows = createMockRowsInWrongChronologicalOrder('2020-03-03');
+        const mockErrorRows =
+            createMockRowsInWrongChronologicalOrder('2020-03-03');
         const { result } = renderHook(() => useFlightInputs());
 
         act(() => {
             result.current.setRows(mockErrorRows);
-        })
+        });
         await act(async () => {
             await result.current.getFlightPrices();
-        })
-        const errorMessageExists = result.current.errorMessages.includes('Please ensure your dates are not in the past.');
+        });
+        const errorMessageExists = result.current.errorMessages.includes(
+            'Please ensure your dates are not in the past.'
+        );
         expect(errorMessageExists).toBe(true);
     });
 
@@ -95,42 +109,46 @@ describe('FlightInput', () => {
 
         act(() => {
             result.current.setRows(mockErrorRows);
-        })
+        });
         await act(async () => {
             await result.current.getFlightPrices();
-        })
+        });
 
         expect(result.current.errorMessages.length).toBeGreaterThan(0);
 
         act(() => {
             result.current.setRows(mockRows);
-        })
+        });
         await act(async () => {
             await result.current.getFlightPrices();
-        })
+        });
 
         expect(result.current.errorMessages.length).toBe(0);
     });
 
-    it('should report an error if an error is encountered when making a call to the backend', async() => {
+    it('should report an error if an error is encountered when making a call to the backend', async () => {
         mockFlightPriceService = {
-            getFlightPrices: jest.fn().mockRejectedValue(new Error('mock error'))
+            getFlightPrices: jest
+                .fn()
+                .mockRejectedValue(new Error('mock error')),
         };
-        (FlightPriceService as jest.Mock).mockReturnValue(mockFlightPriceService);
+        (FlightPriceService as jest.Mock).mockReturnValue(
+            mockFlightPriceService
+        );
         const { result } = renderHook(() => useFlightInputs());
 
         act(() => {
             result.current.setRows(mockRows);
-        })
+        });
         await act(async () => {
             await result.current.getFlightPrices();
-        })
+        });
 
         const errorMessageExists = result.current.errorMessages.includes(
             'Error encountered when attempting to fetch relevant flight details. Please try again.'
         );
         expect(errorMessageExists).toBe(true);
-    })
+    });
 
     describe('when six rows are being displayed', () => {
         it('should not allow you to display any more rows by removing the add row button from the DOM', async () => {
@@ -138,7 +156,7 @@ describe('FlightInput', () => {
 
             const addRowButton = await screen.findByText('Add another row');
             act(() => {
-                Array.from({ length: 4 }).map(_ => {
+                Array.from({ length: 4 }).map((_) => {
                     user.click(addRowButton);
                 });
             });
@@ -149,42 +167,51 @@ describe('FlightInput', () => {
     describe('when only two rows are being displayed', () => {
         it('should not allow you to delete rows', async () => {
             render(<FlightInput />);
-            const removeRowButtons = await screen.findAllByLabelText('remove row');
+            const removeRowButtons =
+                await screen.findAllByLabelText('remove row');
 
             removeRowButtons.forEach((removeRowButton) => {
                 expect(removeRowButton).toBeDisabled();
             });
-        })
-    })
+        });
+    });
 
     function createMockRows(isError: boolean = false): Array<IRow> {
         const mockRow1: IRow = {
             id: 123,
-            from: isError? '' : 'mock-from',
+            from: isError ? '' : 'mock-from',
             to: isError ? '' : 'mock-to',
-            date: isError ? '' : '2025-02-03'
+            date: isError ? '' : '2025-02-03',
         };
         const mockRow2: IRow = {
             id: 456,
             from: 'mock-from-2',
             to: 'mock-to-2',
-            date: '2025-03-09'
-        }
+            date: '2025-03-09',
+        };
         return [mockRow1, mockRow2];
-    };
+    }
 
     function createMockRowsInWrongChronologicalOrder(dateOverride?: string) {
-        const mockRow1 = createMockRow('mockFrom', 'mockTo', dateOverride ?? '2028-04-08');
+        const mockRow1 = createMockRow(
+            'mockFrom',
+            'mockTo',
+            dateOverride ?? '2028-04-08'
+        );
         const mockRow2 = createMockRow('mockFrom', 'mockTo', '2028-04-06');
-        return [mockRow1, mockRow2]
+        return [mockRow1, mockRow2];
     }
 
-    function createMockRow(mockFrom?: string, mockTo?: string, mockDate?: string): IRow {
-       return {
+    function createMockRow(
+        mockFrom?: string,
+        mockTo?: string,
+        mockDate?: string
+    ): IRow {
+        return {
             id: 123,
-            from:  mockFrom ?? 'mock-from',
+            from: mockFrom ?? 'mock-from',
             to: mockTo ?? 'mock-to',
-            date: mockDate ?? 'mock-date'
+            date: mockDate ?? 'mock-date',
         };
     }
-})
+});
