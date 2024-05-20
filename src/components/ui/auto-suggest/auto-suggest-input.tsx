@@ -5,16 +5,6 @@ import { airportCodes } from "@/components/ui/flight-input/airport-codes";
 import { IataInfo } from "@/constants";
 import { IRow } from "@/components/ui/flight-input/flight-input";
 
-/*
- *
- * suggestions: the subset of values that are shown to the user from the main data set once they've input a value
- * onSuggestionsClearRequested: is called when you need to set your suggestions to an empty array
- * onSuggestionsFetchRequested: is called every time your suggestions array needs to be recalculated
- * renderSuggestion: Renders each suggestion result in the DOM
- * getSuggestionValue: This is the function that grabs the value of the suggestion when it is selected (either clicked on or highlighted)
- * inputProps: this is the placeholder for passing arbitrary values to the autoSuggest component from this app, ie pass things like
- *             tailwind styling here
- */
 type HandleInputChangeFunc = (index: number, field: keyof IRow, value: string) => void;
 
 const codes = [...cityCodes, ...airportCodes];
