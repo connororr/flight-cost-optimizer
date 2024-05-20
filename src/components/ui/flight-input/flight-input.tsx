@@ -143,23 +143,10 @@ export default function FlightInput() {
           </p>
           {rows.map((row, index) => (
             <div key={row.id} className="flex space-x-2">
-              <AutoSuggestInput id={index + 1} placeholder={'From'} handleInputChange={handleInputChange} />
-              {/*<Input*/}
-              {/*  className="flex-grow"*/}
-              {/*  id={`from${index + 1}`}*/}
-              {/*  placeholder="From"*/}
-              {/*  value={row.from}*/}
-              {/*  onChange={(e) => handleInputChange(index, 'from', e.target.value)}*/}
-              {/*/>*/}
+              <AutoSuggestInput id={index} placeholder={'From'} handleInputChange={handleInputChange} />
+              <AutoSuggestInput id={index} placeholder={'To'} handleInputChange={handleInputChange} />
               <Input
-                className="flex-grow"
-                id={`to${index + 1}`}
-                placeholder="To"
-                value={row.to}
-                onChange={(e) => handleInputChange(index, 'to', e.target.value)}
-              />
-              <Input
-                className="flex-grow"
+                className="flex-grow placeholder-gray-500 h-[38px]"
                 id={`date${index + 1}`}
                 type="date"
                 value={row.date}

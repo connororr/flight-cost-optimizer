@@ -51,7 +51,7 @@ export default function AutoSuggestInput({ id, placeholder, handleInputChange }:
     }
 
     function _getSuggestionValue(suggestion: IataInfo): IataInfo {
-       return suggestion.iataCode;
+       return suggestion.name;
     }
 
     const inputProps = {
@@ -59,13 +59,17 @@ export default function AutoSuggestInput({ id, placeholder, handleInputChange }:
         value,
         onChange: function(_, { newValue }): void {
             setValue(newValue);
-            handleInputChange(id, 'placeholder', newValue);
+            const cityNameArray = codes.filter((code) => code.name === newValue);
+            if (cityNameArray.length) {
+                const iataCode = cityNameArray[0].iataCode;
+                handleInputChange(id, placeholder.toLowerCase(), iataCode);
+            }
         }
     }
 
 
     return (
-        <div id={id}>
+        <div id={id} className="flex-grow">
             <Autosuggest
                 suggestions={suggestions}
                 onSuggestionsFetchRequested={_onSuggestionsFetchRequested}
@@ -73,6 +77,10 @@ export default function AutoSuggestInput({ id, placeholder, handleInputChange }:
                 renderSuggestion={_renderSuggestion}
                 getSuggestionValue={_getSuggestionValue}
                 inputProps={inputProps}
+                theme={{
+                    container: 'max-w-[300px]-sm',
+                    input: 'p-2 border-[1px] rounded-sm shadow-sm h-[38px] placeholder-black text-sm'
+                }}
             />
         </div>
     )
