@@ -1,7 +1,7 @@
-import Itineraries from "@/components/ui/itineraries/itineraries";
-import { render, screen } from "@testing-library/react";
-import { DataContextValue, useData } from "@/context/DataContext";
-import {FlightLeg, Itinerary, Segment} from "@/constants/response";
+import Itineraries from '@/components/ui/itineraries/itineraries';
+import { render, screen } from '@testing-library/react';
+import { DataContextValue, useData } from '@/context/DataContext';
+import { FlightLeg, Itinerary, Segment } from '@/constants/response';
 
 jest.mock('@/context/DataContext');
 
@@ -15,8 +15,8 @@ describe('itineraries', () => {
             setFetchedData: jest.fn(),
             setInProgress: jest.fn(),
         };
-       (useData as jest.Mock).mockReturnValue(mockDataContext);
-    })
+        (useData as jest.Mock).mockReturnValue(mockDataContext);
+    });
 
     describe('whilst loading the results of the flight search', () => {
         it('should display a loading component', async () => {
@@ -28,7 +28,9 @@ describe('itineraries', () => {
             (useData as jest.Mock).mockReturnValue(newContext);
             render(<Itineraries />);
 
-            const flightDetailsLoading = await screen.findAllByTestId('flight-details-loading');
+            const flightDetailsLoading = await screen.findAllByTestId(
+                'flight-details-loading'
+            );
             expect(flightDetailsLoading.length).toBe(6);
         });
     });
@@ -52,37 +54,37 @@ describe('itineraries', () => {
             duration: '4H',
             departure: {
                 at: 'mockAt',
-                iataCode: 'mockIataCode'
+                iataCode: 'mockIataCode',
             },
             arrival: {
                 at: 'mockArrivalAt',
-                iataCode: 'mockIataCode'
+                iataCode: 'mockIataCode',
             },
-            carrierCode: 'mockCarrierCode'
+            carrierCode: 'mockCarrierCode',
         };
 
         const mockSegmentTwo: Segment = {
             duration: '5H',
             departure: {
                 at: 'mockAtTwo',
-                iataCode: 'mockIataCodeTwo'
+                iataCode: 'mockIataCodeTwo',
             },
             arrival: {
                 at: 'mockArrivalAtTwo',
-                iataCode: 'mockIataCodeTwo'
+                iataCode: 'mockIataCodeTwo',
             },
-            carrierCode: 'mockCarrierCodeTwo'
-        }
+            carrierCode: 'mockCarrierCodeTwo',
+        };
         const flightLeg: FlightLeg = {
             duration: '9H',
             from: 'London',
             to: 'San Francisco',
             numberOfStopovers: 1,
-            segments: [mockSegment, mockSegmentTwo]
+            segments: [mockSegment, mockSegmentTwo],
         };
         return {
             cost: '9000',
-            flightLegs: [flightLeg]
+            flightLegs: [flightLeg],
         };
     }
-})
+});

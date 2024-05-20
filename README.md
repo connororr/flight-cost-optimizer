@@ -1,4 +1,4 @@
-# Flight-cost-optimizer 
+# Flight-cost-optimizer
 
 This project is an SPA that connects to a backend server, ([Flight-cost-optimizer-server](https://github.com/connororr/flight-cost-optimizer-server)),
 to allow a user to do a flight search using the Amadeus API.
@@ -43,7 +43,7 @@ so tests are run automatically before releasing.
 
 # End-to-end Tests
 
-End-to-end tests are available via [Playwright](https://playwright.dev/). Curently they hit production 
+End-to-end tests are available via [Playwright](https://playwright.dev/). Curently they hit production
 until we can get a stage environment to host these on. To run end-to-end tests via npm:
 
 ```

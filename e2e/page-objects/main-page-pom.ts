@@ -1,9 +1,14 @@
-import { Page, test, expect } from "@playwright/test";
-import { getFutureDate } from "../utils";
+import { Page, test, expect } from '@playwright/test';
+import { getFutureDate } from '../utils';
 
 export interface IMainPage {
     goto(): Promise<void>;
-    searchForFlights(fromOne: string, toOne: string, fromTwo: string, toTwo: string): Promise<void>;
+    searchForFlights(
+        fromOne: string,
+        toOne: string,
+        fromTwo: string,
+        toTwo: string
+    ): Promise<void>;
     searchForIataCode(input: string): Promise<void>;
     expectIataCode(code: string): Promise<void>;
     expectFlightResults(flightResult: string, stopover: string): Promise<void>;
@@ -12,7 +17,6 @@ export interface IMainPage {
 
 export class MainPage implements IMainPage {
     constructor(private readonly _page: Page) {}
-
 
     public async goto() {
         await this._page.goto('https://exploria-test.xyz/');
@@ -35,9 +39,7 @@ export class MainPage implements IMainPage {
     }
 
     @boxedStep
-    public async searchForIataCode(
-        input: string
-    ) {
+    public async searchForIataCode(input: string) {
         await this._page.getByPlaceholder('City name').fill(input);
         await this._page.getByText('Get Code!').click();
     }
@@ -49,8 +51,12 @@ export class MainPage implements IMainPage {
 
     @boxedStep
     public async expectFlightResults(flightResult: string, stopover: string) {
-        await expect(this._page.getByText(flightResult).first()).toBeVisible({ timeout: 10000 });
-        await expect(this._page.getByText(stopover).first()).toBeVisible({ timeout: 10000 });
+        await expect(this._page.getByText(flightResult).first()).toBeVisible({
+            timeout: 10000,
+        });
+        await expect(this._page.getByText(stopover).first()).toBeVisible({
+            timeout: 10000,
+        });
     }
 
     @boxedStep
@@ -61,14 +67,17 @@ export class MainPage implements IMainPage {
         }
         expect(errrorLocators.length).toBe(errorMessageCount);
     }
-
 }
 
 function boxedStep(target: Function, context: ClassMethodDecoratorContext) {
     return function replacementMethod(...args: any) {
         const name = this.constructor.name + '.' + (context.name as string);
-        return test.step(name, async () => {
-            return await target.call(this, ...args);
-        }, { box: true });  // Note the "box" option here.
+        return test.step(
+            name,
+            async () => {
+                return await target.call(this, ...args);
+            },
+            { box: true }
+        ); // Note the "box" option here.
     };
 }
