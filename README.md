@@ -26,7 +26,7 @@ You may also see any lint errors in the console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
+Launches the test runner in the interactive watch mode.
 
 ### `npm run build`
 
@@ -38,8 +38,7 @@ Your app is ready to be deployed!
 
 # Deployment
 
-Deployment to [exploria-test.xyz](exploria-test.xyz) happens automatically when merging to main. Ideally CI/CD is added
-so tests are run automatically before releasing.
+Deployment to [exploria-test.xyz](exploria-test.xyz) happens automatically when merging to main.
 
 # End-to-end Tests
 
@@ -48,4 +47,10 @@ until we can get a stage environment to host these on. To run end-to-end tests v
 
 ```
 npm run e2e-tests
+```
+
+To run in ui mode:
+
+```
+npm run e2e-tests-ui
 ```
