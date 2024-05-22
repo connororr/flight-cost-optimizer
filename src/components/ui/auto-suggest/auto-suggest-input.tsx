@@ -59,7 +59,7 @@ export default function AutoSuggestInput({ id, placeholder, handleInputChange }:
 
 
     return (
-        <div id={id} className="flex-grow">
+        <div id={id}>
             <Autosuggest
                 suggestions={suggestions}
                 onSuggestionsFetchRequested={_onSuggestionsFetchRequested}
@@ -68,8 +68,7 @@ export default function AutoSuggestInput({ id, placeholder, handleInputChange }:
                 getSuggestionValue={_getSuggestionValue}
                 inputProps={inputProps}
                 theme={{
-                    container: 'max-w-[300px]-sm',
-                    input: 'p-2 border-[1px] rounded-sm shadow-sm h-[38px] placeholder-black text-sm'
+                    input: 'w-full p-2 border-[1px] rounded-sm shadow-sm h-[38px] placeholder-black text-sm'
                 }}
             />
         </div>

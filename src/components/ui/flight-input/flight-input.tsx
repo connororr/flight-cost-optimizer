@@ -178,7 +178,6 @@ export default function FlightInput() {
                             <AutoSuggestInput id={index} placeholder={'From'} handleInputChange={handleInputChange} />
                             <AutoSuggestInput id={index} placeholder={'To'} handleInputChange={handleInputChange} />
                             <Input
-                                className="flex-grow"
                                 id={`date${index + 1}`}
                                 type="date"
                                 value={row.date}
