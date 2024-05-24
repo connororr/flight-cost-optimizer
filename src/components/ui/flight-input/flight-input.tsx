@@ -160,19 +160,6 @@ export default function FlightInput() {
                     <h2 className="text-2xl font-semibold">Travel Planner</h2>
                 </CardHeader>
                 <CardContent className="pt-4 pr-4 pb-4 space-y-4">
-                    <p className="text-norwege">
-                        *
-                        <a
-                            className="underline"
-                            href="https://en.wikipedia.org/wiki/IATA_airport_code"
-                        >
-                            IATA
-                        </a>{' '}
-                        codes are needed as input values to do a search instead
-                        of city names. Whilst the autocomplete functionality to
-                        get IATA codes is in progress use the input field above
-                        to grab the right IATA code for your desired city.
-                    </p>
                     {rows.map((row, index) => (
                         <div key={row.id} className="flex space-x-2">
                             <AutoSuggestInput id={index} placeholder={'From'} handleInputChange={handleInputChange} />

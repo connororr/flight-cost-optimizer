@@ -17,7 +17,6 @@ function App() {
             />
             <DataProvider>
                 <ApiServiceProvider>
-                    <IataCodeSearch />
                     <FlightInput />
                     <Itineraries />
                 </ApiServiceProvider>

@@ -9,8 +9,6 @@ export interface IMainPage {
         fromTwo: string,
         toTwo: string
     ): Promise<void>;
-    searchForIataCode(input: string): Promise<void>;
-    expectIataCode(code: string): Promise<void>;
     expectFlightResults(flightResult: string, stopover: string): Promise<void>;
     expectErrorMessage(errorMessageCount: number): Promise<void>;
 }
@@ -36,17 +34,6 @@ export class MainPage implements IMainPage {
         await this._page.locator('#to2').fill(toTwo);
         await this._page.locator('#date2').fill(getFutureDate(4));
         await this._page.getByText('Search Flights').click();
-    }
-
-    @boxedStep
-    public async searchForIataCode(input: string) {
-        await this._page.getByPlaceholder('City name').fill(input);
-        await this._page.getByText('Get Code!').click();
-    }
-
-    @boxedStep
-    public async expectIataCode(code: string) {
-        await expect(this._page.getByText(code)).toBeVisible({ timeout: 10000 });
     }
 
     @boxedStep
