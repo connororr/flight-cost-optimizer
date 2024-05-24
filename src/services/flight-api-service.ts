@@ -6,7 +6,7 @@ export interface IFlightApiService {
 }
 
 export class FlightApiService implements IFlightApiService {
-    private flightApiServiceBaseUrl: string = config.url;
+    private _flightApiServiceBaseUrl: string = config.url;
 
     public post(endpoint: string, body?: unknown): Promise<unknown> {
         const requestOptions: RequestInit = {
@@ -17,7 +17,7 @@ export class FlightApiService implements IFlightApiService {
             body: JSON.stringify(body),
         };
         return fetch(
-            `${this.flightApiServiceBaseUrl}${endpoint}`,
+            `${this._flightApiServiceBaseUrl}${endpoint}`,
             requestOptions
         );
     }
@@ -26,11 +26,12 @@ export class FlightApiService implements IFlightApiService {
         const requestOptions: RequestInit = {
             method: 'GET',
             headers: {
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 'Content-Type': 'application/json',
             },
         };
 
-        const baseUrl = `${this.flightApiServiceBaseUrl}${endpoint}`;
+        const baseUrl = `${this._flightApiServiceBaseUrl}${endpoint}`;
         const url = params ? `${baseUrl}?${params}` : `${baseUrl}`;
         return fetch(url, requestOptions);
     }

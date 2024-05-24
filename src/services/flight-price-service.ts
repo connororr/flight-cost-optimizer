@@ -1,4 +1,4 @@
-import { Row as Flight } from '@/components/ui/flight-input/flight-input';
+import { IRow as Flight } from '@/components/ui/flight-input/flight-input';
 import { Endpoints } from '@/constants/endpoints';
 import { IFlightApiService } from './flight-api-service';
 import { Itineraries } from '@/constants/response';

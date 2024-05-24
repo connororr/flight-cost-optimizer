@@ -1,0 +1,32 @@
+import { IataInfo } from "@/constants";
+
+
+export const cityCodes: IataInfo[] = [
+    { name: 'Bucharest', iataCode: 'BUH' },
+    { name: 'Buenos Aires', iataCode: 'BUE' },
+    { name: 'Detroit', iataCode: 'DTT' },
+    { name: 'Izmir', iataCode: 'IZM' },
+    { name: 'Edmonton', iataCode: 'YEA' },
+    { name: 'Jakarta', iataCode: 'JKT' },
+    { name: 'London', iataCode: 'LON' },
+    { name: 'Milan', iataCode: 'MIL' },
+    { name: 'Montreal', iataCode: 'YMQ' },
+    { name: 'Paris', iataCode: 'PAR' },
+    { name: 'Reykjavik', iataCode: 'REK' },
+    { name: 'Rio de Janeiro', iataCode: 'RIO' },
+    { name: 'Rome', iataCode: 'ROM' },
+    { name: 'Sao Paulo', iataCode: 'SAO' },
+    { name: 'Toronto', iataCode: 'YTO' },
+    { name: 'Stockholm', iataCode: 'STO' },
+    { name: 'Washington D.C.', iataCode: 'WAS' },
+    { name: 'Tokyo', iataCode: 'TYO' },
+    { name: 'Baku', iataCode: 'BAK' },
+    { name: 'Belo Horizonte', iataCode: 'BHZ' },
+    { name: 'Beijing', iataCode: 'BJS' },
+    { name: 'New York', iataCode: 'NYC' },
+    { name: 'Osaka', iataCode: 'OSA' },
+    { name: 'Colombo', iataCode: 'CMB' },
+    { name: 'Seoul', iataCode: 'SEL' },
+    { name: 'Digdig', iataCode: 'NCP' },
+    { name: 'Moscow', iataCode: 'MOW' },
+];

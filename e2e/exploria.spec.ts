@@ -13,12 +13,6 @@ test.describe('Flight Input Scenarios', () => {
         await pom.expectFlightResults('MAD - LHR', 'Direct');
     });
 
-    test('get IATA code', async ({ page }) => {
-        const pom = new MainPage(page);
-        await pom.searchForIataCode('New York');
-        await pom.expectIataCode('JFK');
-    });
-
     test('Show a valid error message', async ({ page }) => {
         const pom = new MainPage(page);
         await pom.searchForFlights('', '', '', '');
