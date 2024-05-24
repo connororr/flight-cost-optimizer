@@ -1,7 +1,3 @@
-/**
- * v0 by Vercel generated the initial template.
- * @see https://v0.dev/t/RrQK3NJoqpD
- */
 import React, { useState } from 'react';
 import { Input } from '@/components/shadcn/input';
 import { Button } from '@/components/shadcn/button';
@@ -12,7 +8,8 @@ import {
 } from '@/services/flight-price-service';
 import { useData } from '@/context/DataContext';
 import ErrorMessage from '../error-message/error-message';
-import { useApiService } from '@/context/ApiServiceContext';import AutoSuggestInput from "@/components/ui/auto-suggest";
+import { useApiService } from '@/context/ApiServiceContext';
+import AutoSuggestInput from "@/components/ui/auto-suggest";
 
 export interface IRow {
     id: number;
