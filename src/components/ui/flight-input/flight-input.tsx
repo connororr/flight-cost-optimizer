@@ -32,6 +32,7 @@ export function useFlightInputs() {
     ]);
 
     async function getFlightPrices(): Promise<void> {
+        console.log(rows);
         const newErrorMessages: string[] = [];
         rows.forEach((row: IRow) => {
             if (row.from === '') {
