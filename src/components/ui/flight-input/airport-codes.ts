@@ -1,8 +1,9 @@
 import { IataInfo } from '@/constants';
 
 export const airportCodes:Array<IataInfo> = [
+    { iataCode: 'MAD', name: 'Madrid'},
     { iataCode: 'UGL', name: 'Union Glacier Blue-Ice Runway' },
-    { iataCode: 'SXW',name: 'Sauren' },
+    { iataCode: 'SXW', name: 'Sauren' },
     { iataCode: 'NDV', name: 'USN Heliport' },
     { iataCode: 'EAP', name: 'EuroAirport Basel-Mulhouse-Freiburg Airport' },
     { iataCode: 'NET', name: 'New Bight' },

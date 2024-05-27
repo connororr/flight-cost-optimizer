@@ -1,6 +1,9 @@
 import { Page, test, expect } from '@playwright/test';
 import { getFutureDate } from '../utils';
 
+
+type PlaceholderTextOptions = 'From' | 'To';
+
 export interface IMainPage {
     goto(): Promise<void>;
     searchForFlights(
@@ -27,11 +30,11 @@ export class MainPage implements IMainPage {
         fromTwo: string,
         toTwo: string
     ) {
-        await this._page.locator('#from1').fill(fromOne);
-        await this._page.locator('#from2').fill(fromTwo);
+        await this._fillInAutosuggestInput('From', fromOne, 0);
+        await this._fillInAutosuggestInput('From', fromTwo, 1);
         await this._page.locator('#date1').fill(getFutureDate(2));
-        await this._page.locator('#to1').fill(toOne);
-        await this._page.locator('#to2').fill(toTwo);
+        await this._fillInAutosuggestInput('To', toOne, 0);
+        await this._fillInAutosuggestInput('To', toTwo, 1);
         await this._page.locator('#date2').fill(getFutureDate(4));
         await this._page.getByText('Search Flights').click();
     }
@@ -53,6 +56,17 @@ export class MainPage implements IMainPage {
             await expect(locator).toBeVisible({ timeout: 10000 });
         }
         expect(errrorLocators.length).toBe(errorMessageCount);
+    }
+
+    private async _fillInAutosuggestInput(placeholderText: PlaceholderTextOptions,
+                                          inputText: string,
+                                          inputIndex: number
+    ) {
+        await this._page.getByPlaceholder(placeholderText).nth(inputIndex).fill(inputText);
+        if (inputText) {
+            await this._page.getByText(inputText, { exact: true }).click();
+
+        }
     }
 }
 
