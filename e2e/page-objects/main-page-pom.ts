@@ -63,7 +63,10 @@ export class MainPage implements IMainPage {
                                           inputIndex: number
     ) {
         await this._page.getByPlaceholder(placeholderText).nth(inputIndex).fill(inputText);
-        await this._page.getByText(inputText, { exact: true }).click();
+        if (inputText) {
+            await this._page.getByText(inputText, { exact: true }).click();
+
+        }
     }
 }
 
